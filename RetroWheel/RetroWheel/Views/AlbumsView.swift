@@ -2,6 +2,7 @@ import SwiftUI
 
 struct AlbumsView: View {
     @EnvironmentObject var playerVM: MusicPlayerViewModel
+    @EnvironmentObject var purchaseManager: PurchaseManager
 
     private var sortedAlbums: [String] {
         playerVM.albums.keys.sorted()
@@ -19,7 +20,8 @@ struct AlbumsView: View {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 14) {
                     ForEach(sortedAlbums, id: \.self) { album in
-                        NavigationLink(destination: AlbumDetailView(album: album)) {
+                        NavigationLink(destination: AlbumDetailView(album: album)
+                            .environmentObject(purchaseManager)) {
                             AlbumTileView(album: album,
                                           songs: playerVM.albums[album] ?? [])
                         }
@@ -66,6 +68,8 @@ struct AlbumTileView: View {
 
 struct AlbumDetailView: View {
     @EnvironmentObject var playerVM: MusicPlayerViewModel
+    @EnvironmentObject var purchaseManager: PurchaseManager
+    @State private var showPaywall = false
     let album: String
 
     private var songs: [Song] {
@@ -77,7 +81,6 @@ struct AlbumDetailView: View {
             Color(white: 0.08).ignoresSafeArea()
 
             List {
-                // Album hero header
                 Section {
                     HStack(spacing: 14) {
                         ArtworkView(song: songs.first, size: 80)
@@ -100,15 +103,33 @@ struct AlbumDetailView: View {
 
                 Section {
                     ForEach(songs) { song in
-                        Button { playerVM.play(song: song, queue: songs) } label: {
-                            SongRowView(song: song,
-                                        isPlaying: playerVM.currentSong == song && playerVM.isPlaying)
+                        Button {
+                            if playerVM.canPlay(hasFullAccess: purchaseManager.hasFullAccess) {
+                                playerVM.play(song: song, queue: songs,
+                                              hasFullAccess: purchaseManager.hasFullAccess)
+                            } else {
+                                showPaywall = true
+                            }
+                        } label: {
+                            SongRowView(
+                                song: song,
+                                isPlaying: playerVM.currentSong == song && playerVM.isPlaying,
+                                isLocked: !purchaseManager.hasFullAccess &&
+                                    playerVM.songsPlayedThisSession >= PurchaseManager.freeSongLimit
+                            )
                         }
                         .listRowBackground(Color.clear)
                         .listRowSeparatorTint(Color.white.opacity(0.1))
                     }
                 }
                 .listRowBackground(Color.clear)
+
+                if !purchaseManager.hasFullAccess {
+                    Section {
+                        UpgradeBanner().environmentObject(purchaseManager)
+                    }
+                    .listRowBackground(Color.clear)
+                }
             }
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
@@ -117,5 +138,8 @@ struct AlbumDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color(white: 0.10), for: .navigationBar)
         .toolbarColorScheme(.dark, for: .navigationBar)
+        .sheet(isPresented: $showPaywall) {
+            PaywallView().environmentObject(purchaseManager)
+        }
     }
 }
