@@ -162,5 +162,6 @@ struct RetroShellView: View {
 #Preview {
     RetroShellView()
         .environmentObject(MusicPlayerViewModel())
+        .environmentObject(PurchaseManager())
         .background(Color.black)
 }

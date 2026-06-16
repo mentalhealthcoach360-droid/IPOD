@@ -18,5 +18,6 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .environmentObject(MusicPlayerViewModel())
+        .environmentObject(PurchaseManager())
 }
 

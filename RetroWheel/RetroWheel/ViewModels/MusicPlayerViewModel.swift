@@ -217,7 +217,7 @@ final class MusicPlayerViewModel: ObservableObject {
         guard let song = currentSong else { return }
         let target = song.duration * fraction
         if song.musicKitSong != nil {
-            Task { try? await mkPlayer.playbackTime = target }
+            mkPlayer.playbackTime = target
         } else {
             let time = CMTime(seconds: target, preferredTimescale: 600)
             avPlayer?.seek(to: time)

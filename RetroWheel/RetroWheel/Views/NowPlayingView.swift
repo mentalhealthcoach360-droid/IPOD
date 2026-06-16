@@ -249,4 +249,5 @@ struct RetroButtonStyle: ButtonStyle {
 #Preview {
     NowPlayingView()
         .environmentObject(MusicPlayerViewModel())
+        .environmentObject(PurchaseManager())
 }
