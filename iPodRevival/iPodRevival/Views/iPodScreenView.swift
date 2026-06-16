@@ -1,0 +1,37 @@
+import SwiftUI
+
+/// The content rendered inside the virtual iPod screen.
+/// Routes between the main menu and sub-screens.
+struct iPodScreenView: View {
+    @EnvironmentObject var playerVM: MusicPlayerViewModel
+    @State private var navigationPath: [LibrarySection] = []
+
+    var body: some View {
+        NavigationStack(path: $navigationPath) {
+            MainMenuView()
+                .navigationDestination(for: LibrarySection.self) { section in
+                    sectionView(for: section)
+                }
+        }
+        .navigationViewStyle(.stack)
+        .tint(.white)
+        .onReceive(playerVM.$activeSection) { section in
+            if section == .music {
+                navigationPath = []
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func sectionView(for section: LibrarySection) -> some View {
+        switch section {
+        case .nowPlaying:  NowPlayingView()
+        case .music:       MainMenuView()
+        case .playlists:   PlaylistsView()
+        case .artists:     ArtistsView()
+        case .albums:      AlbumsView()
+        case .songs:       SongsView()
+        case .settings:    SettingsView()
+        }
+    }
+}

@@ -1,0 +1,94 @@
+import SwiftUI
+
+struct PlaylistsView: View {
+    @EnvironmentObject var playerVM: MusicPlayerViewModel
+
+    var body: some View {
+        ZStack {
+            Color(white: 0.08).ignoresSafeArea()
+
+            if playerVM.playlists.isEmpty {
+                emptyState
+            } else {
+                List(playerVM.playlists) { playlist in
+                    NavigationLink(destination: PlaylistDetailView(playlist: playlist)) {
+                        playlistRow(playlist)
+                    }
+                    .listRowBackground(Color.clear)
+                    .listRowSeparatorTint(Color.white.opacity(0.1))
+                }
+                .listStyle(.plain)
+                .scrollContentBackground(.hidden)
+            }
+        }
+        .navigationTitle("Playlists")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(Color(white: 0.10), for: .navigationBar)
+        .toolbarColorScheme(.dark, for: .navigationBar)
+    }
+
+    private func playlistRow(_ playlist: MusicPlayerViewModel.PlaylistItem) -> some View {
+        HStack(spacing: 12) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 6)
+                    .fill(Color.white.opacity(0.08))
+                    .frame(width: 44, height: 44)
+                Image(systemName: "music.note.list")
+                    .font(.system(size: 18))
+                    .foregroundStyle(Color.white.opacity(0.5))
+            }
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(playlist.name)
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundStyle(Color.white)
+                    .lineLimit(1)
+                Text("\(playlist.songs.count) songs")
+                    .font(.system(size: 12))
+                    .foregroundStyle(Color.white.opacity(0.5))
+            }
+        }
+        .padding(.vertical, 4)
+    }
+
+    private var emptyState: some View {
+        VStack(spacing: 14) {
+            Image(systemName: "text.badge.plus")
+                .font(.system(size: 40))
+                .foregroundStyle(Color.white.opacity(0.25))
+            Text("No playlists yet")
+                .font(.system(size: 15))
+                .foregroundStyle(Color.white.opacity(0.4))
+            Text("Create playlists in Apple Music\nor sync them with Finder.")
+                .font(.system(size: 13))
+                .foregroundStyle(Color.white.opacity(0.3))
+                .multilineTextAlignment(.center)
+        }
+    }
+}
+
+struct PlaylistDetailView: View {
+    @EnvironmentObject var playerVM: MusicPlayerViewModel
+    let playlist: MusicPlayerViewModel.PlaylistItem
+
+    var body: some View {
+        ZStack {
+            Color(white: 0.08).ignoresSafeArea()
+
+            List(playlist.songs) { song in
+                Button { playerVM.play(song: song, queue: playlist.songs) } label: {
+                    SongRowView(song: song,
+                                isPlaying: playerVM.currentSong == song && playerVM.isPlaying)
+                }
+                .listRowBackground(Color.clear)
+                .listRowSeparatorTint(Color.white.opacity(0.1))
+            }
+            .listStyle(.plain)
+            .scrollContentBackground(.hidden)
+        }
+        .navigationTitle(playlist.name)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(Color(white: 0.10), for: .navigationBar)
+        .toolbarColorScheme(.dark, for: .navigationBar)
+    }
+}
