@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// The top-level iPod-style menu screen.
+/// The top-level RetroWheel menu screen.
 struct MainMenuView: View {
     @EnvironmentObject var playerVM: MusicPlayerViewModel
 
@@ -45,7 +45,7 @@ struct MainMenuView: View {
 
     private var menuHeader: some View {
         HStack {
-            Text("iPod")
+            Text("RetroWheel")
                 .font(.system(size: 18, weight: .semibold, design: .rounded))
                 .foregroundStyle(Color.white)
             Spacer()

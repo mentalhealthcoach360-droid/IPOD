@@ -9,8 +9,8 @@ struct SettingsView: View {
             Color(white: 0.08).ignoresSafeArea()
 
             List {
-                // iPod colour picker
-                Section("iPod Colour") {
+                // Shell colour picker
+                Section("Shell Colour") {
                     iPodColorPicker
                 }
                 .listSectionSpacing(8)

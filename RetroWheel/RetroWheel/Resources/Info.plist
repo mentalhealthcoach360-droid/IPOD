@@ -5,7 +5,7 @@
     <key>CFBundleDevelopmentRegion</key>
     <string>$(DEVELOPMENT_LANGUAGE)</string>
     <key>CFBundleDisplayName</key>
-    <string>iPod Revival</string>
+    <string>RetroWheel</string>
     <key>CFBundleExecutable</key>
     <string>$(EXECUTABLE_NAME)</string>
     <key>CFBundleIdentifier</key>
@@ -23,9 +23,9 @@
     <key>LSRequiresIPhoneOS</key>
     <true/>
     <key>NSAppleMusicUsageDescription</key>
-    <string>iPod Revival uses Apple Music to stream your library and the full catalog — just like your old iPod, but better.</string>
+    <string>RetroWheel uses Apple Music to stream your library and the full catalog — the nostalgia experience you remember, reimagined.</string>
     <key>NSMicrophoneUsageDescription</key>
-    <string>iPod Revival does not use the microphone.</string>
+    <string>RetroWheel does not use the microphone.</string>
     <key>UIApplicationSupportsIndirectInputEvents</key>
     <true/>
     <key>UILaunchStoryboardName</key>

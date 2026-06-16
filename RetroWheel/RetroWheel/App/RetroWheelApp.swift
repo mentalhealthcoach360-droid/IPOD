@@ -2,7 +2,7 @@ import SwiftUI
 import MusicKit
 
 @main
-struct iPodRevivalApp: App {
+struct RetroWheelApp: App {
     @StateObject private var playerVM = MusicPlayerViewModel()
 
     var body: some Scene {

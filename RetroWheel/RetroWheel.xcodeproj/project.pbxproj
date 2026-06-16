@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A001 /* iPodRevivalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F001 /* iPodRevivalApp.swift */; };
+		A001 /* RetroWheelApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F001 /* RetroWheelApp.swift */; };
 		A002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F002 /* ContentView.swift */; };
 		A003 /* iPodShellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F003 /* iPodShellView.swift */; };
 		A004 /* iPodScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F004 /* iPodScreenView.swift */; };
@@ -30,7 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F001 /* iPodRevivalApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPodRevivalApp.swift; sourceTree = "<group>"; };
+		F001 /* RetroWheelApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetroWheelApp.swift; sourceTree = "<group>"; };
 		F002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F003 /* iPodShellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPodShellView.swift; sourceTree = "<group>"; };
 		F004 /* iPodScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPodScreenView.swift; sourceTree = "<group>"; };
@@ -50,8 +50,8 @@
 		F018 /* LibrarySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrarySection.swift; sourceTree = "<group>"; };
 		F019 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F020 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F021 /* iPodRevival.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iPodRevival.entitlements; sourceTree = "<group>"; };
-		PROD /* iPodRevival.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iPodRevival.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F021 /* RetroWheel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RetroWheel.entitlements; sourceTree = "<group>"; };
+		PROD /* RetroWheel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RetroWheel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,7 +67,7 @@
 		ROOT /* = */ = {
 			isa = PBXGroup;
 			children = (
-				APPGRP /* iPodRevival */,
+				APPGRP /* RetroWheel */,
 				PRODGRP /* Products */,
 			);
 			sourceTree = "<group>";
@@ -75,12 +75,12 @@
 		PRODGRP /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				PROD /* iPodRevival.app */,
+				PROD /* RetroWheel.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		APPGRP /* iPodRevival */ = {
+		APPGRP /* RetroWheel */ = {
 			isa = PBXGroup;
 			children = (
 				APPSUBGRP /* App */,
@@ -90,13 +90,13 @@
 				MODELGRP /* Models */,
 				RESGRP /* Resources */,
 			);
-			path = iPodRevival;
+			path = RetroWheel;
 			sourceTree = "<group>";
 		};
 		APPSUBGRP /* App */ = {
 			isa = PBXGroup;
 			children = (
-				F001 /* iPodRevivalApp.swift */,
+				F001 /* RetroWheelApp.swift */,
 				F002 /* ContentView.swift */,
 			);
 			path = App;
@@ -151,7 +151,7 @@
 			children = (
 				F019 /* Assets.xcassets */,
 				F020 /* Info.plist */,
-				F021 /* iPodRevival.entitlements */,
+				F021 /* RetroWheel.entitlements */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -159,9 +159,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		TARGET /* iPodRevival */ = {
+		TARGET /* RetroWheel */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CFGLIST /* Build configuration list for PBXNativeTarget "iPodRevival" */;
+			buildConfigurationList = CFGLIST /* Build configuration list for PBXNativeTarget "RetroWheel" */;
 			buildPhases = (
 				SRCPH /* Sources */,
 				FWKPH /* Frameworks */,
@@ -169,9 +169,9 @@
 			);
 			buildRules = ();
 			dependencies = ();
-			name = iPodRevival;
-			productName = iPodRevival;
-			productReference = PROD /* iPodRevival.app */;
+			name = RetroWheel;
+			productName = RetroWheel;
+			productReference = PROD /* RetroWheel.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -189,7 +189,7 @@
 					};
 				};
 			};
-			buildConfigurationList = PROJCFGLIST /* Build configuration list for PBXProject "iPodRevival" */;
+			buildConfigurationList = PROJCFGLIST /* Build configuration list for PBXProject "RetroWheel" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -202,7 +202,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				TARGET /* iPodRevival */,
+				TARGET /* RetroWheel */,
 			);
 		};
 /* End PBXProject section */
@@ -224,7 +224,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A001 /* iPodRevivalApp.swift in Sources */,
+				A001 /* RetroWheelApp.swift in Sources */,
 				A002 /* ContentView.swift in Sources */,
 				A003 /* iPodShellView.swift in Sources */,
 				A004 /* iPodScreenView.swift in Sources */,
@@ -369,16 +369,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "iPodRevival/Resources/iPodRevival.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "RetroWheel/Resources/RetroWheel.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "iPodRevival/Resources/Info.plist";
+				INFOPLIST_FILE = "RetroWheel/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.iPodRevival;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.RetroWheel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
@@ -394,16 +394,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "iPodRevival/Resources/iPodRevival.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "RetroWheel/Resources/RetroWheel.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "iPodRevival/Resources/Info.plist";
+				INFOPLIST_FILE = "RetroWheel/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.iPodRevival;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.RetroWheel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
@@ -417,7 +417,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		PROJCFGLIST /* Build configuration list for PBXProject "iPodRevival" */ = {
+		PROJCFGLIST /* Build configuration list for PBXProject "RetroWheel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DBG /* Debug */,
@@ -426,7 +426,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CFGLIST /* Build configuration list for PBXNativeTarget "iPodRevival" */ = {
+		CFGLIST /* Build configuration list for PBXNativeTarget "RetroWheel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				TDBG /* Debug */,

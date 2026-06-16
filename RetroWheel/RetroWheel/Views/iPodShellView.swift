@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Full-screen iPod touch 5 shell.  The "virtual screen" lives inside the cutout.
+/// Full-screen RetroWheel device shell.  The "virtual screen" lives inside the cutout.
 struct iPodShellView: View {
     @EnvironmentObject var playerVM: MusicPlayerViewModel
     @State private var homeButtonPressed = false
