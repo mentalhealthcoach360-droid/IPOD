@@ -29,6 +29,7 @@
 		A020 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F020 /* Info.plist */; };
 		A021 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F022 /* PurchaseManager.swift */; };
 		A022 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F023 /* PaywallView.swift */; };
+		A023 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F024 /* KeychainHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +56,8 @@
 		F021 /* RetroWheel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RetroWheel.entitlements; sourceTree = "<group>"; };
 		F022 /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
 		F023 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		F024 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
+		F025 /* RetroWheel.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = RetroWheel.storekit; sourceTree = "<group>"; };
 		PROD /* RetroWheel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RetroWheel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -138,6 +141,7 @@
 				F014 /* MusicKitService.swift */,
 				F015 /* LocalMusicService.swift */,
 				F022 /* PurchaseManager.swift */,
+				F024 /* KeychainHelper.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -158,6 +162,7 @@
 				F019 /* Assets.xcassets */,
 				F020 /* Info.plist */,
 				F021 /* RetroWheel.entitlements */,
+				F025 /* RetroWheel.storekit */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -249,6 +254,7 @@
 				A017 /* ShellColor.swift in Sources */,
 				A021 /* PurchaseManager.swift in Sources */,
 				A022 /* PaywallView.swift in Sources */,
+				A023 /* KeychainHelper.swift in Sources */,
 				A018 /* LibrarySection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

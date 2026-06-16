@@ -91,7 +91,8 @@ RetroWheel/
     ├── Services/
     │   ├── MusicKitService.swift      — MusicKit API calls
     │   ├── LocalMusicService.swift    — Local media library queries
-    │   └── PurchaseManager.swift      — StoreKit 2 non-consumable IAP, 7-day free-to-try period, free-tier limits
+    │   ├── PurchaseManager.swift      — StoreKit 2 non-consumable IAP, 7-day free-to-try period, free-tier limits
+    │   └── KeychainHelper.swift       — Minimal Keychain wrapper; stores trial start date across reinstalls
     ├── Models/
     │   ├── Song.swift                 — Unified song model (streaming + local)
     │   ├── ShellColor.swift           — 5-colour enum with gradient definitions
@@ -99,6 +100,7 @@ RetroWheel/
     └── Resources/
         ├── Info.plist                 — Music library usage description + audio background mode
         ├── RetroWheel.entitlements    — MusicKit entitlement
+        ├── RetroWheel.storekit        — Local StoreKit config for Simulator testing
         └── Assets.xcassets/
 ```
 
@@ -121,6 +123,32 @@ RetroWheel/
 3. Add the **MusicKit** capability (Signing & Capabilities → + → MusicKit).
 4. Add **Background Modes → Audio, AirPlay, and Picture in Picture**.
 5. Build and run on a real device (MusicKit does not work on the Simulator).
+
+### Local StoreKit testing (Simulator)
+
+A StoreKit configuration file is included at `RetroWheel/Resources/RetroWheel.storekit`. This lets you test the full purchase, restore, and paywall flow in the Simulator without a real App Store account.
+
+**One-time setup:**
+1. In Xcode, go to **Product → Scheme → Edit Scheme…**
+2. Select **Run** → **Options** tab
+3. Under **StoreKit Configuration**, choose `RetroWheel.storekit`
+4. Close and run on any Simulator
+
+**What you can test with the local config:**
+- `PaywallView` loads the product and shows the correct price ($4.99)
+- Tapping **Unlock Forever** completes the purchase and unlocks all gated features
+- Tapping **Restore Purchase** re-unlocks on a fresh install
+- Free-tier song cap (3 songs/session) is enforced correctly
+- Locked shell colours become available after unlock
+- Playlists screen unlocks after purchase
+
+**The product defined in `RetroWheel.storekit`:**
+```
+Product ID: com.marcustrise.retrowheel.unlock
+Type:       Non-Consumable  ← not a subscription
+Price:      $4.99
+Name:       Unlock RetroWheel
+```
 
 ### First Launch
 On first launch the app requests access to your music library. Tap **Allow** to connect your streaming library. For local-only playback, tap **Not Now** and grant local library access in Settings instead.
@@ -163,6 +191,19 @@ On first launch the app requests access to your music library. Tap **Allow** to 
 - **Song** is a unified value type wrapping either a MusicKit track or a local media item, so all views are source-agnostic.
 - **RetroShellView** is 100% SwiftUI gradients and shapes — no image assets, no UIKit.
 - Zero third-party dependencies.
+
+### Trial start date — Keychain, not UserDefaults
+
+The 7-day free-to-try start date is stored in the **Keychain** (via `KeychainHelper`), not `UserDefaults`.
+
+| Storage | Survives reinstall? | Survives device erase? |
+|---------|--------------------|-----------------------|
+| UserDefaults | No — wiped on delete | No |
+| Keychain (`kSecAttrAccessibleAfterFirstUnlock`) | **Yes** | No — correct behaviour |
+
+This is the simplest App Store-friendly approach: no server, no login, no analytics, no subscriptions. A user who deletes and reinstalls still gets the same remaining trial days. A full device erase resets the trial, which is acceptable since the user can always restore their paid unlock via **Restore Purchase**.
+
+The implementation is in `KeychainHelper.swift` (≈60 lines, no third-party dependencies, uses only `Security.framework`).
 
 ---
 
