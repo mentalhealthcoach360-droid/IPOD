@@ -27,6 +27,8 @@
 		A018 /* LibrarySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F018 /* LibrarySection.swift */; };
 		A019 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F019 /* Assets.xcassets */; };
 		A020 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F020 /* Info.plist */; };
+		A021 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F022 /* PurchaseManager.swift */; };
+		A022 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F023 /* PaywallView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +53,8 @@
 		F019 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F020 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F021 /* RetroWheel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RetroWheel.entitlements; sourceTree = "<group>"; };
+		F022 /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
+		F023 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		PROD /* RetroWheel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RetroWheel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -115,6 +119,7 @@
 				F010 /* PlaylistsView.swift */,
 				F011 /* SettingsView.swift */,
 				F012 /* ArtworkView.swift */,
+				F023 /* PaywallView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -132,6 +137,7 @@
 			children = (
 				F014 /* MusicKitService.swift */,
 				F015 /* LocalMusicService.swift */,
+				F022 /* PurchaseManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -241,6 +247,8 @@
 				A015 /* LocalMusicService.swift in Sources */,
 				A016 /* Song.swift in Sources */,
 				A017 /* ShellColor.swift in Sources */,
+				A021 /* PurchaseManager.swift in Sources */,
+				A022 /* PaywallView.swift in Sources */,
 				A018 /* LibrarySection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -4,6 +4,7 @@ import SwiftUI
 /// Routes between the main menu and all sub-screens.
 struct ClassicMusicScreen: View {
     @EnvironmentObject var playerVM: MusicPlayerViewModel
+    @EnvironmentObject var purchaseManager: PurchaseManager
     @State private var navigationPath: [LibrarySection] = []
 
     var body: some View {

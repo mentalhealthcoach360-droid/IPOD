@@ -3,12 +3,22 @@ import MusicKit
 
 struct SettingsView: View {
     @EnvironmentObject var playerVM: MusicPlayerViewModel
+    @EnvironmentObject var purchaseManager: PurchaseManager
+    @State private var showPaywall = false
 
     var body: some View {
         ZStack {
             Color(white: 0.08).ignoresSafeArea()
 
             List {
+                // Trial / unlock banner
+                if !purchaseManager.hasFullAccess {
+                    Section {
+                        trialBannerRow
+                    }
+                    .listSectionSpacing(8)
+                }
+
                 // Shell colour picker
                 Section("Shell Colour") {
                     shellColorPicker
@@ -17,15 +27,15 @@ struct SettingsView: View {
 
                 // Music sources
                 Section("Music Sources") {
-                    appleMusicRow
+                    streamingRow
                     localLibraryRow
                 }
                 .listSectionSpacing(8)
 
                 // About
                 Section("About") {
-                    labelRow(icon: "app.badge", label: "Version", value: "1.0.0")
-                    labelRow(icon: "purchased", label: "License", value: "Purchased")
+                    labelRow(icon: "app.badge",   label: "Version",  value: "1.0.0")
+                    labelRow(icon: "purchased",    label: "License",  value: purchaseManager.isUnlocked ? "Unlocked" : "Free")
                 }
             }
             .listStyle(.insetGrouped)
@@ -36,9 +46,60 @@ struct SettingsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color(white: 0.10), for: .navigationBar)
         .toolbarColorScheme(.dark, for: .navigationBar)
+        .sheet(isPresented: $showPaywall) {
+            PaywallView().environmentObject(purchaseManager)
+        }
     }
 
-    // MARK: - Rows
+    // MARK: - Trial banner
+
+    private var trialBannerRow: some View {
+        Button { showPaywall = true } label: {
+            HStack(spacing: 14) {
+                Image(systemName: purchaseManager.isInTrial ? "clock.badge" : "lock.fill")
+                    .font(.system(size: 20))
+                    .foregroundStyle(purchaseManager.isInTrial ? Color.green : Color.yellow)
+                    .frame(width: 30)
+
+                VStack(alignment: .leading, spacing: 3) {
+                    if purchaseManager.isInTrial {
+                        Text("Free trial active")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundStyle(Color.white)
+                        Text("\(purchaseManager.trialDaysRemaining) day\(purchaseManager.trialDaysRemaining == 1 ? "" : "s") remaining")
+                            .font(.system(size: 12))
+                            .foregroundStyle(Color.white.opacity(0.6))
+                    } else {
+                        Text("Unlock full access")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundStyle(Color.white)
+                        Text("One-time \(purchaseManager.formattedPrice) · No subscription")
+                            .font(.system(size: 12))
+                            .foregroundStyle(Color.white.opacity(0.6))
+                    }
+                }
+
+                Spacer()
+
+                if !purchaseManager.isInTrial {
+                    Text("Unlock")
+                        .font(.system(size: 12, weight: .bold))
+                        .foregroundStyle(Color.black)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 5)
+                        .background(Color.white)
+                        .cornerRadius(12)
+                }
+            }
+            .padding(.vertical, 6)
+        }
+        .buttonStyle(.plain)
+        .listRowBackground(
+            (purchaseManager.isInTrial ? Color.green : Color.yellow).opacity(0.08)
+        )
+    }
+
+    // MARK: - Shell colour picker
 
     private var shellColorPicker: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -54,12 +115,17 @@ struct SettingsView: View {
     }
 
     private func colorSwatch(_ color: ShellColor) -> some View {
-        let isSelected = playerVM.selectedShellColor == color
+        let isSelected  = playerVM.selectedShellColor == color
+        let isAvailable = purchaseManager.hasFullAccess || color == .black
         return Button {
-            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                playerVM.selectedShellColor = color
+            if isAvailable {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                    playerVM.selectedShellColor = color
+                }
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            } else {
+                showPaywall = true
             }
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
         } label: {
             VStack(spacing: 6) {
                 ZStack {
@@ -72,35 +138,59 @@ struct SettingsView: View {
                             )
                         )
                         .frame(width: 40, height: 40)
-                    if isSelected {
+                        .opacity(isAvailable ? 1.0 : 0.45)
+                    if isSelected && isAvailable {
                         Circle()
                             .stroke(Color.white, lineWidth: 2.5)
                             .frame(width: 46, height: 46)
                     }
+                    if !isAvailable {
+                        Image(systemName: "lock.fill")
+                            .font(.system(size: 13))
+                            .foregroundStyle(Color.white.opacity(0.7))
+                    }
                 }
                 Text(color.rawValue)
                     .font(.system(size: 10))
-                    .foregroundStyle(isSelected ? Color.white : Color.white.opacity(0.5))
+                    .foregroundStyle(isSelected && isAvailable
+                                     ? Color.white
+                                     : Color.white.opacity(0.4))
             }
         }
         .buttonStyle(.plain)
     }
 
-    private var appleMusicRow: some View {
+    // MARK: - Music source rows
+
+    private var streamingRow: some View {
         HStack {
-            Image(systemName: "music.note")
+            Image(systemName: "antenna.radiowaves.left.and.right")
                 .foregroundStyle(Color.pink)
                 .frame(width: 28)
-            Text("Streaming Library")
-                .foregroundStyle(Color.white)
+            VStack(alignment: .leading, spacing: 1) {
+                Text("Streaming Library")
+                    .foregroundStyle(Color.white)
+                if !purchaseManager.hasFullAccess {
+                    Text("Full access required")
+                        .font(.system(size: 11))
+                        .foregroundStyle(Color.yellow.opacity(0.8))
+                }
+            }
             Spacer()
-            statusBadge(
-                text: authStatusText,
-                color: playerVM.musicAuthStatus == .authorized ? .green : .orange
-            )
+            if purchaseManager.hasFullAccess {
+                statusBadge(
+                    text: authStatusText,
+                    color: playerVM.musicAuthStatus == .authorized ? .green : .orange
+                )
+            } else {
+                Image(systemName: "lock.fill")
+                    .font(.system(size: 13))
+                    .foregroundStyle(Color.yellow.opacity(0.7))
+            }
         }
         .contentShape(Rectangle())
         .onTapGesture {
+            guard purchaseManager.hasFullAccess else { showPaywall = true; return }
             if playerVM.musicAuthStatus != .authorized {
                 Task { await playerVM.requestMusicKitAuthorization() }
             }
@@ -113,7 +203,7 @@ struct SettingsView: View {
             Image(systemName: "folder")
                 .foregroundStyle(Color.yellow)
                 .frame(width: 28)
-            Text("Local Library")
+            Text("Local Music Library")
                 .foregroundStyle(Color.white)
             Spacer()
             statusBadge(
@@ -130,13 +220,15 @@ struct SettingsView: View {
         .listRowBackground(Color.white.opacity(0.07))
     }
 
+    // MARK: - Helpers
+
     private var authStatusText: String {
         switch playerVM.musicAuthStatus {
-        case .authorized:       return "Connected"
-        case .denied:           return "Denied"
-        case .restricted:       return "Restricted"
-        case .notDetermined:    return "Tap to Allow"
-        @unknown default:       return "Unknown"
+        case .authorized:    return "Connected"
+        case .denied:        return "Denied"
+        case .restricted:    return "Restricted"
+        case .notDetermined: return "Tap to Allow"
+        @unknown default:    return "Unknown"
         }
     }
 
@@ -169,4 +261,5 @@ struct SettingsView: View {
 #Preview {
     SettingsView()
         .environmentObject(MusicPlayerViewModel())
+        .environmentObject(PurchaseManager())
 }

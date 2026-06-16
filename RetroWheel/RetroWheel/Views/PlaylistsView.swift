@@ -2,16 +2,21 @@ import SwiftUI
 
 struct PlaylistsView: View {
     @EnvironmentObject var playerVM: MusicPlayerViewModel
+    @EnvironmentObject var purchaseManager: PurchaseManager
+    @State private var showPaywall = false
 
     var body: some View {
         ZStack {
             Color(white: 0.08).ignoresSafeArea()
 
-            if playerVM.playlists.isEmpty {
+            if !purchaseManager.hasFullAccess {
+                lockedState
+            } else if playerVM.playlists.isEmpty {
                 emptyState
             } else {
                 List(playerVM.playlists) { playlist in
-                    NavigationLink(destination: PlaylistDetailView(playlist: playlist)) {
+                    NavigationLink(destination: PlaylistDetailView(playlist: playlist)
+                        .environmentObject(purchaseManager)) {
                         playlistRow(playlist)
                     }
                     .listRowBackground(Color.clear)
@@ -25,6 +30,30 @@ struct PlaylistsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color(white: 0.10), for: .navigationBar)
         .toolbarColorScheme(.dark, for: .navigationBar)
+        .sheet(isPresented: $showPaywall) {
+            PaywallView().environmentObject(purchaseManager)
+        }
+    }
+
+    private var lockedState: some View {
+        VStack(spacing: 20) {
+            Image(systemName: "lock.fill")
+                .font(.system(size: 40))
+                .foregroundStyle(Color.yellow.opacity(0.6))
+            Text("Playlists are included\nwith full access")
+                .font(.system(size: 15))
+                .foregroundStyle(Color.white.opacity(0.5))
+                .multilineTextAlignment(.center)
+            Button("Unlock — \(purchaseManager.formattedPrice)") {
+                showPaywall = true
+            }
+            .font(.system(size: 14, weight: .semibold))
+            .foregroundStyle(Color.black)
+            .padding(.horizontal, 24)
+            .padding(.vertical, 10)
+            .background(Color.white)
+            .cornerRadius(20)
+        }
     }
 
     private func playlistRow(_ playlist: MusicPlayerViewModel.PlaylistItem) -> some View {

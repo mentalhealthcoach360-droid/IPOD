@@ -31,6 +31,11 @@ final class MusicPlayerViewModel: ObservableObject {
     @Published var activeSection: LibrarySection = .music
     @Published var selectedShellColor: ShellColor = .black
 
+    // MARK: - Free tier tracking
+    /// Number of distinct songs played this app session (resets on cold launch).
+    @Published private(set) var songsPlayedThisSession: Int = 0
+    @Published var showPaywall: Bool = false
+
     // MARK: - Private
     private var musicKitService = MusicKitService()
     private var localService = LocalMusicService()
@@ -127,7 +132,18 @@ final class MusicPlayerViewModel: ObservableObject {
 
     // MARK: - Playback control
 
-    func play(song: Song, queue: [Song]? = nil) {
+    /// Call before `play` to decide whether the free tier allows another song.
+    func canPlay(hasFullAccess: Bool) -> Bool {
+        hasFullAccess || songsPlayedThisSession < PurchaseManager.freeSongLimit
+    }
+
+    func play(song: Song, queue: [Song]? = nil, hasFullAccess: Bool = true) {
+        guard canPlay(hasFullAccess: hasFullAccess) else {
+            showPaywall = true
+            return
+        }
+        // Only count newly started songs (not resume/seek on the same track)
+        if song != currentSong { songsPlayedThisSession += 1 }
         currentSong = song
         stopCurrentPlayback()
 

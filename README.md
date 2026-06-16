@@ -2,7 +2,9 @@
 
 > **RetroWheel** is a nostalgic touch-wheel music player designed for people who miss the simplicity of classic handheld MP3 players. Import your own songs, browse your library, and control playback with a smooth retro-inspired wheel interface.
 
-A skeuomorphic iOS app that fills your screen with a retro-styled handheld music player shell, with a fully functional music player running inside the virtual screen. One-time $4.99 purchase on the App Store — no subscriptions, no ads.
+A skeuomorphic iOS app that fills your screen with a retro-styled handheld music player shell, with a fully functional music player running inside the virtual screen.
+
+**Free to download.** A 7-day full-access trial starts on first launch. After the trial, a one-time $4.99 in-app purchase unlocks everything permanently — no subscriptions, no recurring charges.
 
 ---
 
@@ -19,6 +21,18 @@ Your entire screen becomes a retro music device. The rounded metal body, the hom
 - Five colour variants — **Black, White, Pink, Yellow, Blue** — switchable in Settings
 - Sheen highlight, body gradient, side buttons, and home button with press animation + haptic feedback
 - Portrait-only orientation locks the shell in place
+
+### Monetization Model
+
+| Tier | Price | What you get |
+|------|-------|-------------|
+| **Free** | $0 | Browse the full retro interface, play up to 3 local tracks per session |
+| **7-day trial** | Free | Full access to everything for 7 days from first launch |
+| **Lifetime unlock** | $4.99 (one-time IAP) | Unlimited songs, all playlists, streaming library, all 5 shell colours |
+
+- Product ID: `com.yourcompany.RetroWheel.unlock`
+- IAP type: Non-consumable (one-time purchase, restores automatically)
+- No subscription tiers
 
 ### Music Player
 | Screen | What it does |
@@ -64,7 +78,8 @@ RetroWheel/
     │   ├── MainMenuView.swift         — Top-level RetroWheel menu
     │   ├── NowPlayingView.swift       — Full player with artwork, scrubber, controls
     │   ├── ArtworkView.swift          — Resolves streaming / local artwork
-    │   ├── SongsView.swift            — Searchable song list
+    │   ├── SongsView.swift            — Searchable song list (free-tier cap enforced)
+    │   ├── PaywallView.swift          — Full-access paywall + upgrade banner
     │   ├── ArtistsView.swift          — Artist list + detail
     │   ├── AlbumsView.swift           — Album grid + detail
     │   ├── PlaylistsView.swift        — Playlist list + detail
@@ -73,7 +88,8 @@ RetroWheel/
     │   └── MusicPlayerViewModel.swift — Playback state, library loading, routing
     ├── Services/
     │   ├── MusicKitService.swift      — MusicKit API calls
-    │   └── LocalMusicService.swift    — Local media library queries
+    │   ├── LocalMusicService.swift    — Local media library queries
+    │   └── PurchaseManager.swift      — StoreKit 2 IAP, 7-day trial, free-tier limits
     ├── Models/
     │   ├── Song.swift                 — Unified song model (streaming + local)
     │   ├── ShellColor.swift           — 5-colour enum with gradient definitions
@@ -91,7 +107,7 @@ RetroWheel/
 ### Requirements
 - **Xcode 15.4** or later
 - **iOS 16.0** deployment target
-- An **Apple Developer account** (free tier works for device testing; paid account required for App Store distribution)
+- A **developer account** enrolled in the Developer Program (free tier works for device testing; paid enrollment required for App Store distribution)
 - A music streaming subscription to test streaming playback (local library works without one)
 
 ### Setup
@@ -111,13 +127,24 @@ On first launch the app requests access to your music library. Tap **Allow** to 
 
 ## App Store Submission Checklist
 
+### App setup
 - [ ] Replace `com.yourcompany.RetroWheel` bundle ID with your own
 - [ ] Set correct Team in Signing & Capabilities
 - [ ] Add a 1024×1024 app icon to `Assets.xcassets/AppIcon.appiconset/`
 - [ ] Screenshot on iPhone 6.7-inch and 6.5-inch for the listing
-- [ ] Set price to **$4.99** (Tier 5) in App Store Connect → Pricing and Availability
 - [ ] Fill in App Store Connect metadata (name, subtitle, keywords, description)
 - [ ] Submit for review with category **Music**
+
+### Pricing (freemium)
+- [ ] Set app price to **Free** in App Store Connect → Pricing and Availability
+- [ ] Create an In-App Purchase in App Store Connect:
+  - Type: **Non-Consumable**
+  - Product ID: `com.yourcompany.RetroWheel.unlock`
+  - Price: **$4.99** (Tier 5)
+  - Display name: `Unlock RetroWheel`
+  - Description: `Unlock unlimited songs, playlists, streaming library access, and all shell colour options. One-time purchase — no subscription.`
+- [ ] Update `PurchaseManager.productID` constant to match your Product ID
+- [ ] Test the IAP flow in sandbox mode before submitting
 
 ### App Store Description
 
@@ -125,7 +152,7 @@ On first launch the app requests access to your music library. Tap **Allow** to 
 >
 > Your screen becomes a retro music device — body, home button, side buttons, and all. Browse by song, artist, or album. Connect your streaming library or play tracks synced from your computer. Five colour options. Tap the home button and feel it click.
 >
-> One price. No subscriptions. No ads. Just music.
+> **Free to download.** Explore the full retro interface with a 7-day free trial. After the trial, unlock everything permanently for a one-time $4.99 — no subscription, no recurring charges, ever.
 
 ---
 
