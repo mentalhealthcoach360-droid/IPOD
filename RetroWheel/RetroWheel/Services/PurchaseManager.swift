@@ -2,11 +2,12 @@ import Foundation
 import StoreKit
 import Combine
 
-/// Manages the single non-consumable lifetime unlock IAP and the 7-day free trial.
+/// Manages the single non-consumable lifetime unlock IAP and the "free to try" period.
 ///
-/// - Product ID: `com.yourcompany.RetroWheel.unlock`
+/// - Product ID: `com.marcustrise.retrowheel.unlock`
+/// - IAP type:   Non-consumable (NOT an auto-renewable subscription)
 /// - Free tier:  browse shell, play up to 3 local tracks per session
-/// - Trial:      7-day full access, starts on first launch; no payment required
+/// - Try period: free to try for 7 days from first launch; no payment required
 /// - Unlocked:   $4.99 one-time purchase, full access forever
 @MainActor
 final class PurchaseManager: ObservableObject {
@@ -24,7 +25,7 @@ final class PurchaseManager: ObservableObject {
 
     // MARK: - Constants
 
-    static let productID = "com.yourcompany.RetroWheel.unlock"
+    static let productID = "com.marcustrise.retrowheel.unlock"
     static let freeSongLimit = 3
 
     private let trialDurationDays = 7

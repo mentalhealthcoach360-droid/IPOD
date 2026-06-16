@@ -63,10 +63,10 @@ struct SettingsView: View {
 
                 VStack(alignment: .leading, spacing: 3) {
                     if purchaseManager.isInTrial {
-                        Text("Free trial active")
+                        Text("Free to try — active")
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundStyle(Color.white)
-                        Text("\(purchaseManager.trialDaysRemaining) day\(purchaseManager.trialDaysRemaining == 1 ? "" : "s") remaining")
+                        Text("\(purchaseManager.trialDaysRemaining) day\(purchaseManager.trialDaysRemaining == 1 ? "" : "s") left to try for free")
                             .font(.system(size: 12))
                             .foregroundStyle(Color.white.opacity(0.6))
                     } else {

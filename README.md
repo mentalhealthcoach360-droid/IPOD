@@ -4,7 +4,7 @@
 
 A skeuomorphic iOS app that fills your screen with a retro-styled handheld music player shell, with a fully functional music player running inside the virtual screen.
 
-**Free to download.** A 7-day full-access trial starts on first launch. After the trial, a one-time $4.99 in-app purchase unlocks everything permanently — no subscriptions, no recurring charges.
+**Free to download.** The app is free to try for 7 days from first launch — no payment required. After that, a one-time $4.99 in-app purchase unlocks everything permanently. This is a **non-consumable IAP, not an auto-renewable subscription** — users are never charged again.
 
 ---
 
@@ -27,12 +27,14 @@ Your entire screen becomes a retro music device. The rounded metal body, the hom
 | Tier | Price | What you get |
 |------|-------|-------------|
 | **Free** | $0 | Browse the full retro interface, play up to 3 local tracks per session |
-| **7-day trial** | Free | Full access to everything for 7 days from first launch |
+| **Free to try** | Free, 7 days | Full access from first launch — no payment required |
 | **Lifetime unlock** | $4.99 (one-time IAP) | Unlimited songs, all playlists, streaming library, all 5 shell colours |
 
-- Product ID: `com.yourcompany.RetroWheel.unlock`
-- IAP type: Non-consumable (one-time purchase, restores automatically)
-- No subscription tiers
+- Bundle ID: `com.marcustrise.retrowheel`
+- Product ID: `com.marcustrise.retrowheel.unlock`
+- IAP type: **Non-consumable** — one-time purchase, restores automatically via StoreKit 2
+- **Not an auto-renewable subscription** — users are never charged again after the one-time unlock
+- Free to try for 7 days from first launch (tracked locally — no StoreKit subscription needed)
 
 ### Music Player
 | Screen | What it does |
@@ -89,7 +91,7 @@ RetroWheel/
     ├── Services/
     │   ├── MusicKitService.swift      — MusicKit API calls
     │   ├── LocalMusicService.swift    — Local media library queries
-    │   └── PurchaseManager.swift      — StoreKit 2 IAP, 7-day trial, free-tier limits
+    │   └── PurchaseManager.swift      — StoreKit 2 non-consumable IAP, 7-day free-to-try period, free-tier limits
     ├── Models/
     │   ├── Song.swift                 — Unified song model (streaming + local)
     │   ├── ShellColor.swift           — 5-colour enum with gradient definitions
@@ -115,7 +117,7 @@ RetroWheel/
 1. Clone the repo and open `RetroWheel/RetroWheel.xcodeproj` in Xcode.
 2. Select the **RetroWheel** target → **Signing & Capabilities**:
    - Set your **Team**
-   - Change the **Bundle Identifier** to something unique (e.g. `com.yourname.RetroWheel`)
+   - Bundle Identifier is set to `com.marcustrise.retrowheel` — update Team only
 3. Add the **MusicKit** capability (Signing & Capabilities → + → MusicKit).
 4. Add **Background Modes → Audio, AirPlay, and Picture in Picture**.
 5. Build and run on a real device (MusicKit does not work on the Simulator).
@@ -128,8 +130,7 @@ On first launch the app requests access to your music library. Tap **Allow** to 
 ## App Store Submission Checklist
 
 ### App setup
-- [ ] Replace `com.yourcompany.RetroWheel` bundle ID with your own
-- [ ] Set correct Team in Signing & Capabilities
+- [ ] Bundle ID is `com.marcustrise.retrowheel` — set your **Team** in Signing & Capabilities
 - [ ] Add a 1024×1024 app icon to `Assets.xcassets/AppIcon.appiconset/`
 - [ ] Screenshot on iPhone 6.7-inch and 6.5-inch for the listing
 - [ ] Fill in App Store Connect metadata (name, subtitle, keywords, description)
@@ -139,11 +140,11 @@ On first launch the app requests access to your music library. Tap **Allow** to 
 - [ ] Set app price to **Free** in App Store Connect → Pricing and Availability
 - [ ] Create an In-App Purchase in App Store Connect:
   - Type: **Non-Consumable**
-  - Product ID: `com.yourcompany.RetroWheel.unlock`
+  - Product ID: `com.marcustrise.retrowheel.unlock`
   - Price: **$4.99** (Tier 5)
   - Display name: `Unlock RetroWheel`
-  - Description: `Unlock unlimited songs, playlists, streaming library access, and all shell colour options. One-time purchase — no subscription.`
-- [ ] Update `PurchaseManager.productID` constant to match your Product ID
+  - Description: `Unlock unlimited songs, playlists, streaming library access, and all shell colour options. One-time purchase — not a subscription, no recurring charges.`
+- [ ] `PurchaseManager.productID` is already set to `com.marcustrise.retrowheel.unlock`
 - [ ] Test the IAP flow in sandbox mode before submitting
 
 ### App Store Description
@@ -152,7 +153,7 @@ On first launch the app requests access to your music library. Tap **Allow** to 
 >
 > Your screen becomes a retro music device — body, home button, side buttons, and all. Browse by song, artist, or album. Connect your streaming library or play tracks synced from your computer. Five colour options. Tap the home button and feel it click.
 >
-> **Free to download.** Explore the full retro interface with a 7-day free trial. After the trial, unlock everything permanently for a one-time $4.99 — no subscription, no recurring charges, ever.
+> **Free to download.** The app is free to try for 7 days — no payment required. After that, unlock everything permanently for a one-time $4.99. Not a subscription. No recurring charges. Ever.
 
 ---
 

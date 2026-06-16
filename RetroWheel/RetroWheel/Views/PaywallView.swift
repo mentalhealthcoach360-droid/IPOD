@@ -75,7 +75,7 @@ struct PaywallView: View {
     @ViewBuilder
     private var trialBadge: some View {
         if purchaseManager.isInTrial {
-            Text("\(purchaseManager.trialDaysRemaining) day\(purchaseManager.trialDaysRemaining == 1 ? "" : "s") left in your free trial")
+            Text("\(purchaseManager.trialDaysRemaining) day\(purchaseManager.trialDaysRemaining == 1 ? "" : "s") left to try for free")
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundStyle(Color.green)
                 .padding(.horizontal, 14)
@@ -83,7 +83,7 @@ struct PaywallView: View {
                 .background(Color.green.opacity(0.15))
                 .cornerRadius(20)
         } else if !purchaseManager.isUnlocked {
-            Text("7-day free trial included")
+            Text("Free to try for 7 days")
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundStyle(Color.yellow)
                 .padding(.horizontal, 14)
