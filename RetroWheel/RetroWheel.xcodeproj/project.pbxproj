@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		A001 /* RetroWheelApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F001 /* RetroWheelApp.swift */; };
 		A002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F002 /* ContentView.swift */; };
-		A003 /* iPodShellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F003 /* iPodShellView.swift */; };
-		A004 /* iPodScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F004 /* iPodScreenView.swift */; };
+		A003 /* RetroShellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F003 /* RetroShellView.swift */; };
+		A004 /* ClassicMusicScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F004 /* ClassicMusicScreen.swift */; };
 		A005 /* MainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F005 /* MainMenuView.swift */; };
 		A006 /* NowPlayingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006 /* NowPlayingView.swift */; };
 		A007 /* SongsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F007 /* SongsView.swift */; };
@@ -23,7 +23,7 @@
 		A014 /* MusicKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F014 /* MusicKitService.swift */; };
 		A015 /* LocalMusicService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F015 /* LocalMusicService.swift */; };
 		A016 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = F016 /* Song.swift */; };
-		A017 /* iPodColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F017 /* iPodColor.swift */; };
+		A017 /* ShellColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F017 /* ShellColor.swift */; };
 		A018 /* LibrarySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F018 /* LibrarySection.swift */; };
 		A019 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F019 /* Assets.xcassets */; };
 		A020 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F020 /* Info.plist */; };
@@ -32,8 +32,8 @@
 /* Begin PBXFileReference section */
 		F001 /* RetroWheelApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetroWheelApp.swift; sourceTree = "<group>"; };
 		F002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		F003 /* iPodShellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPodShellView.swift; sourceTree = "<group>"; };
-		F004 /* iPodScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPodScreenView.swift; sourceTree = "<group>"; };
+		F003 /* RetroShellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetroShellView.swift; sourceTree = "<group>"; };
+		F004 /* ClassicMusicScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassicMusicScreen.swift; sourceTree = "<group>"; };
 		F005 /* MainMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuView.swift; sourceTree = "<group>"; };
 		F006 /* NowPlayingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingView.swift; sourceTree = "<group>"; };
 		F007 /* SongsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongsView.swift; sourceTree = "<group>"; };
@@ -46,7 +46,7 @@
 		F014 /* MusicKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicKitService.swift; sourceTree = "<group>"; };
 		F015 /* LocalMusicService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalMusicService.swift; sourceTree = "<group>"; };
 		F016 /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
-		F017 /* iPodColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPodColor.swift; sourceTree = "<group>"; };
+		F017 /* ShellColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellColor.swift; sourceTree = "<group>"; };
 		F018 /* LibrarySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrarySection.swift; sourceTree = "<group>"; };
 		F019 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F020 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -105,8 +105,8 @@
 		VIEWSGRP /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				F003 /* iPodShellView.swift */,
-				F004 /* iPodScreenView.swift */,
+				F003 /* RetroShellView.swift */,
+				F004 /* ClassicMusicScreen.swift */,
 				F005 /* MainMenuView.swift */,
 				F006 /* NowPlayingView.swift */,
 				F007 /* SongsView.swift */,
@@ -140,7 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				F016 /* Song.swift */,
-				F017 /* iPodColor.swift */,
+				F017 /* ShellColor.swift */,
 				F018 /* LibrarySection.swift */,
 			);
 			path = Models;
@@ -226,8 +226,8 @@
 			files = (
 				A001 /* RetroWheelApp.swift in Sources */,
 				A002 /* ContentView.swift in Sources */,
-				A003 /* iPodShellView.swift in Sources */,
-				A004 /* iPodScreenView.swift in Sources */,
+				A003 /* RetroShellView.swift in Sources */,
+				A004 /* ClassicMusicScreen.swift in Sources */,
 				A005 /* MainMenuView.swift in Sources */,
 				A006 /* NowPlayingView.swift in Sources */,
 				A007 /* SongsView.swift in Sources */,
@@ -240,7 +240,7 @@
 				A014 /* MusicKitService.swift in Sources */,
 				A015 /* LocalMusicService.swift in Sources */,
 				A016 /* Song.swift in Sources */,
-				A017 /* iPodColor.swift in Sources */,
+				A017 /* ShellColor.swift in Sources */,
 				A018 /* LibrarySection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

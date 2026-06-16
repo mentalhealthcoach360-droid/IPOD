@@ -23,7 +23,7 @@
     <key>LSRequiresIPhoneOS</key>
     <true/>
     <key>NSAppleMusicUsageDescription</key>
-    <string>RetroWheel uses Apple Music to stream your library and the full catalog — the nostalgia experience you remember, reimagined.</string>
+    <string>RetroWheel would like access to your music library so you can browse and play your songs.</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>RetroWheel does not use the microphone.</string>
     <key>UIApplicationSupportsIndirectInputEvents</key>

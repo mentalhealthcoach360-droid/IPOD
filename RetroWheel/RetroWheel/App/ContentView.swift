@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Root view: places the iPod shell centred on a dark linen background.
+/// Root view: places the RetroWheel shell centred on a dark background.
 struct ContentView: View {
     @EnvironmentObject var playerVM: MusicPlayerViewModel
 
@@ -9,7 +9,7 @@ struct ContentView: View {
             Color.black
                 .ignoresSafeArea()
 
-            iPodShellView()
+            RetroShellView()
         }
     }
 }
@@ -18,3 +18,4 @@ struct ContentView: View {
     ContentView()
         .environmentObject(MusicPlayerViewModel())
 }
+

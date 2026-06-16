@@ -1,21 +1,22 @@
 import SwiftUI
 
-/// Full-screen RetroWheel device shell.  The "virtual screen" lives inside the cutout.
-struct iPodShellView: View {
+/// Full-screen RetroWheel device shell rendered entirely in SwiftUI.
+/// The virtual screen content lives inside the cutout region.
+struct RetroShellView: View {
     @EnvironmentObject var playerVM: MusicPlayerViewModel
     @State private var homeButtonPressed = false
 
-    // Physical proportions of the iPod touch 5 (4-inch screen, 1136×640)
-    private let deviceAspect: CGFloat = 1136 / 640   // height / width = 1.775
+    // Classic handheld device proportions (4-inch ratio, 1136×640)
+    private let deviceAspect: CGFloat = 1136 / 640
 
     var body: some View {
         GeometryReader { geo in
             let deviceWidth  = min(geo.size.width * 0.88, 375)
-            let deviceHeight = deviceWidth * deviceAspect
+            let deviceHeight = deviceWidth  * deviceAspect
             let screenWidth  = deviceWidth  * 0.865
             let screenHeight = screenWidth  * deviceAspect * 0.86
             let cornerRadius = deviceWidth  * 0.13
-            let color        = playerVM.selectediPodColor
+            let color        = playerVM.selectedShellColor
 
             ZStack {
                 // ── Body ──────────────────────────────────────────────────
@@ -45,7 +46,7 @@ struct iPodShellView: View {
                     .frame(width: deviceWidth, height: deviceHeight)
 
                 VStack(spacing: 0) {
-                    // ── Top decoration: FaceTime camera + earpiece ─────────
+                    // ── Top decoration: front camera + earpiece ────────────
                     topDecor(width: deviceWidth, color: color)
                         .frame(height: deviceHeight * 0.085)
 
@@ -55,7 +56,7 @@ struct iPodShellView: View {
                             .fill(Color.black)
                             .frame(width: screenWidth, height: screenHeight)
 
-                        iPodScreenView()
+                        ClassicMusicScreen()
                             .frame(width: screenWidth, height: screenHeight)
                             .clipShape(RoundedRectangle(cornerRadius: 4))
                     }
@@ -81,22 +82,20 @@ struct iPodShellView: View {
     // MARK: - Sub-components
 
     @ViewBuilder
-    private func topDecor(width: CGFloat, color: iPodColor) -> some View {
-        let textColor = color.isLight ? Color.black.opacity(0.4) : Color.white.opacity(0.4)
+    private func topDecor(width: CGFloat, color: ShellColor) -> some View {
+        let tint = color.isLight ? Color.black.opacity(0.4) : Color.white.opacity(0.4)
         HStack(spacing: width * 0.06) {
-            // FaceTime camera
             Circle()
-                .fill(textColor)
+                .fill(tint)
                 .frame(width: width * 0.04, height: width * 0.04)
-            // Earpiece grille
             Capsule()
-                .fill(textColor)
+                .fill(tint)
                 .frame(width: width * 0.22, height: width * 0.025)
         }
     }
 
     @ViewBuilder
-    private func homeButton(color: iPodColor, deviceWidth: CGFloat) -> some View {
+    private func homeButton(color: ShellColor, deviceWidth: CGFloat) -> some View {
         let size = deviceWidth * 0.155
         Button {
             withAnimation(.spring(response: 0.2, dampingFraction: 0.5)) {
@@ -106,8 +105,7 @@ struct iPodShellView: View {
                 withAnimation { homeButtonPressed = false }
                 playerVM.activeSection = .music
             }
-            let impact = UIImpactFeedbackGenerator(style: .medium)
-            impact.impactOccurred()
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         } label: {
             ZStack {
                 Circle()
@@ -120,10 +118,7 @@ struct iPodShellView: View {
                         )
                     )
                     .frame(width: size, height: size)
-                    .overlay(
-                        Circle()
-                            .stroke(Color.white.opacity(0.15), lineWidth: 1.5)
-                    )
+                    .overlay(Circle().stroke(Color.white.opacity(0.15), lineWidth: 1.5))
                     .shadow(color: .black.opacity(0.35), radius: 4, y: 2)
 
                 RoundedRectangle(cornerRadius: size * 0.08)
@@ -141,22 +136,19 @@ struct iPodShellView: View {
     @ViewBuilder
     private func sideButtons(deviceWidth: CGFloat,
                               deviceHeight: CGFloat,
-                              color: iPodColor) -> some View {
+                              color: ShellColor) -> some View {
         let btnW: CGFloat = deviceWidth * 0.028
-        let accentColor = color.isLight
+        let accent = color.isLight
             ? color.bodyGradient[0].opacity(0.6)
             : Color.white.opacity(0.25)
 
-        // Volume Up
-        sideButton(width: btnW, height: deviceHeight * 0.07, color: accentColor)
+        sideButton(width: btnW, height: deviceHeight * 0.07, color: accent)
             .offset(x: -(deviceWidth / 2 + btnW / 2), y: -deviceHeight * 0.16)
 
-        // Volume Down
-        sideButton(width: btnW, height: deviceHeight * 0.065, color: accentColor)
+        sideButton(width: btnW, height: deviceHeight * 0.065, color: accent)
             .offset(x: -(deviceWidth / 2 + btnW / 2), y: -deviceHeight * 0.07)
 
-        // Sleep/Wake button (top right edge)
-        sideButton(width: btnW, height: deviceHeight * 0.055, color: accentColor)
+        sideButton(width: btnW, height: deviceHeight * 0.055, color: accent)
             .offset(x: deviceWidth / 2 + btnW / 2, y: -deviceHeight * 0.40)
     }
 
@@ -168,7 +160,7 @@ struct iPodShellView: View {
 }
 
 #Preview {
-    iPodShellView()
+    RetroShellView()
         .environmentObject(MusicPlayerViewModel())
         .background(Color.black)
 }

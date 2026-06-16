@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <!-- Required for MusicKit / Apple Music streaming -->
+    <!-- Required for MusicKit music library access -->
     <key>com.apple.developer.musickit</key>
     <true/>
     <!-- Required for background audio playback -->

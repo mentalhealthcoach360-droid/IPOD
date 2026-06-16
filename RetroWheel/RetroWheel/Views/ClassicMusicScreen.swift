@@ -1,8 +1,8 @@
 import SwiftUI
 
-/// The content rendered inside the RetroWheel virtual screen.
-/// Routes between the main menu and sub-screens.
-struct iPodScreenView: View {
+/// Content rendered inside the RetroWheel virtual screen.
+/// Routes between the main menu and all sub-screens.
+struct ClassicMusicScreen: View {
     @EnvironmentObject var playerVM: MusicPlayerViewModel
     @State private var navigationPath: [LibrarySection] = []
 

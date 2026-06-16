@@ -59,7 +59,7 @@ struct PlaylistsView: View {
             Text("No playlists yet")
                 .font(.system(size: 15))
                 .foregroundStyle(Color.white.opacity(0.4))
-            Text("Create playlists in Apple Music\nor sync them with Finder.")
+            Text("Create playlists in your music app\nor sync them from your computer.")
                 .font(.system(size: 13))
                 .foregroundStyle(Color.white.opacity(0.3))
                 .multilineTextAlignment(.center)

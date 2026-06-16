@@ -29,7 +29,7 @@ final class MusicPlayerViewModel: ObservableObject {
 
     // MARK: - Navigation
     @Published var activeSection: LibrarySection = .music
-    @Published var selectediPodColor: iPodColor = .black
+    @Published var selectedShellColor: ShellColor = .black
 
     // MARK: - Private
     private var musicKitService = MusicKitService()

@@ -1,6 +1,6 @@
 import Foundation
 
-/// Top-level menu items shown inside the iPod shell.
+/// Top-level menu items shown inside the RetroWheel shell.
 enum LibrarySection: String, CaseIterable, Identifiable {
     case nowPlaying  = "Now Playing"
     case music       = "Music"

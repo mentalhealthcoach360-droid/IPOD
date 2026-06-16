@@ -11,7 +11,7 @@ struct SettingsView: View {
             List {
                 // Shell colour picker
                 Section("Shell Colour") {
-                    iPodColorPicker
+                    shellColorPicker
                 }
                 .listSectionSpacing(8)
 
@@ -40,10 +40,10 @@ struct SettingsView: View {
 
     // MARK: - Rows
 
-    private var iPodColorPicker: some View {
+    private var shellColorPicker: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 14) {
-                ForEach(iPodColor.allCases) { color in
+                ForEach(ShellColor.allCases) { color in
                     colorSwatch(color)
                 }
             }
@@ -53,11 +53,11 @@ struct SettingsView: View {
         .listRowInsets(EdgeInsets(top: 4, leading: 14, bottom: 4, trailing: 14))
     }
 
-    private func colorSwatch(_ color: iPodColor) -> some View {
-        let isSelected = playerVM.selectediPodColor == color
+    private func colorSwatch(_ color: ShellColor) -> some View {
+        let isSelected = playerVM.selectedShellColor == color
         return Button {
             withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                playerVM.selectediPodColor = color
+                playerVM.selectedShellColor = color
             }
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
         } label: {
@@ -91,7 +91,7 @@ struct SettingsView: View {
             Image(systemName: "music.note")
                 .foregroundStyle(Color.pink)
                 .frame(width: 28)
-            Text("Apple Music")
+            Text("Streaming Library")
                 .foregroundStyle(Color.white)
             Spacer()
             statusBadge(

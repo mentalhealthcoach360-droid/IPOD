@@ -52,7 +52,7 @@ struct SongsView: View {
                 .font(.system(size: 15))
                 .foregroundStyle(Color.white.opacity(0.5))
             if playerVM.musicAuthStatus != .authorized {
-                Button("Connect Apple Music") {
+                Button("Connect Streaming Library") {
                     Task { await playerVM.requestMusicKitAuthorization() }
                 }
                 .font(.system(size: 14, weight: .semibold))

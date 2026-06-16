@@ -154,7 +154,7 @@ struct NowPlayingView: View {
                     .font(.system(size: 26))
                     .foregroundStyle(Color.white)
             }
-            .buttonStyle(iPodButtonStyle())
+            .buttonStyle(RetroButtonStyle())
 
             Spacer()
 
@@ -164,7 +164,7 @@ struct NowPlayingView: View {
                     .font(.system(size: 52))
                     .foregroundStyle(Color.white)
             }
-            .buttonStyle(iPodButtonStyle())
+            .buttonStyle(RetroButtonStyle())
 
             Spacer()
 
@@ -174,7 +174,7 @@ struct NowPlayingView: View {
                     .font(.system(size: 26))
                     .foregroundStyle(Color.white)
             }
-            .buttonStyle(iPodButtonStyle())
+            .buttonStyle(RetroButtonStyle())
 
             Spacer()
 
@@ -207,7 +207,7 @@ struct NowPlayingView: View {
                 .font(.system(size: 18, weight: .medium))
                 .foregroundStyle(active ? Color.white : Color.white.opacity(0.35))
         }
-        .buttonStyle(iPodButtonStyle())
+        .buttonStyle(RetroButtonStyle())
     }
 
     private var volumeSlider: some View {
@@ -238,7 +238,7 @@ struct NowPlayingView: View {
 }
 
 /// Subtle press-scale effect for transport buttons.
-struct iPodButtonStyle: ButtonStyle {
+struct RetroButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .scaleEffect(configuration.isPressed ? 0.82 : 1.0)

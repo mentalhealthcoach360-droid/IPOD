@@ -1,7 +1,7 @@
 import SwiftUI
 
-/// The five iconic iPod touch 5th-generation colour options.
-enum iPodColor: String, CaseIterable, Identifiable {
+/// The five colour options for the RetroWheel device shell.
+enum ShellColor: String, CaseIterable, Identifiable {
     case black   = "Black"
     case white   = "White"
     case pink    = "Pink"
