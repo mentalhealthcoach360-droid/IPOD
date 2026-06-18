@@ -1,17 +1,13 @@
 import SwiftUI
 
-/// Root view: places the RetroWheel shell centred on a dark background.
+/// Root view — the entire screen is the RetroWheel experience.
 struct ContentView: View {
     @EnvironmentObject var playerVM: MusicPlayerViewModel
     @EnvironmentObject var purchaseManager: PurchaseManager
+    @EnvironmentObject var appSettings: AppSettings
 
     var body: some View {
-        ZStack {
-            Color.black
-                .ignoresSafeArea()
-
-            RetroShellView()
-        }
+        RetroShellView()
     }
 }
 
@@ -19,5 +15,5 @@ struct ContentView: View {
     ContentView()
         .environmentObject(MusicPlayerViewModel())
         .environmentObject(PurchaseManager())
+        .environmentObject(AppSettings())
 }
-
