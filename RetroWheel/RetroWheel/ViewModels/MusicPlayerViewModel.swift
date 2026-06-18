@@ -31,6 +31,14 @@ final class MusicPlayerViewModel: ObservableObject {
     @Published var activeSection: LibrarySection = .music
     @Published var selectedShellColor: ShellColor = .black
 
+    // MARK: - Wheel navigation
+    /// Incremented by the touch wheel's rotary drag — views observe this to scroll their lists.
+    @Published private(set) var wheelScrollStep: Int = 0
+    /// Toggled when the wheel's center button is pressed.
+    @Published private(set) var wheelSelectTick: Int = 0
+    /// Toggled when the wheel's MENU button is pressed.
+    @Published private(set) var wheelBackTick: Int = 0
+
     // MARK: - Free tier tracking
     /// Number of distinct songs played this app session (resets on cold launch).
     @Published private(set) var songsPlayedThisSession: Int = 0
@@ -226,9 +234,24 @@ final class MusicPlayerViewModel: ObservableObject {
 
     func setVolume(_ v: Float) {
         volume = v
-        // MPVolumeView / system volume is controlled via the hardware slider;
-        // AVPlayer volume mirrors it for local playback.
         avPlayer?.volume = v
+    }
+
+    // MARK: - Wheel navigation
+
+    func wheelScrollDown() { wheelScrollStep += 1 }
+    func wheelScrollUp()   { wheelScrollStep -= 1 }
+
+    func wheelSelect() {
+        if currentSong != nil {
+            togglePlayPause()
+        }
+        wheelSelectTick += 1
+    }
+
+    func wheelBack() {
+        activeSection = .music
+        wheelBackTick += 1
     }
 
     // MARK: - Helpers

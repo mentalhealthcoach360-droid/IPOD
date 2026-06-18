@@ -1,161 +1,109 @@
 import SwiftUI
 
-/// Full-screen RetroWheel device shell rendered entirely in SwiftUI.
-/// The virtual screen content lives inside the cutout region.
+/// Full-screen RetroWheel layout.
+///
+/// The entire iPhone display becomes the retro music device:
+///  ┌─────────────────────────────┐
+///  │  top bar  (camera · grille) │
+///  │  ┌───────────────────────┐  │
+///  │  │  screen content area  │  │
+///  │  └───────────────────────┘  │
+///  │         touch wheel         │
+///  └─────────────────────────────┘
 struct RetroShellView: View {
     @EnvironmentObject var playerVM: MusicPlayerViewModel
-    @State private var homeButtonPressed = false
-
-    // Classic handheld device proportions (4-inch ratio, 1136×640)
-    private let deviceAspect: CGFloat = 1136 / 640
+    @EnvironmentObject var purchaseManager: PurchaseManager
+    @EnvironmentObject var appSettings: AppSettings
 
     var body: some View {
         GeometryReader { geo in
-            let deviceWidth  = min(geo.size.width * 0.88, 375)
-            let deviceHeight = deviceWidth  * deviceAspect
-            let screenWidth  = deviceWidth  * 0.865
-            let screenHeight = screenWidth  * deviceAspect * 0.86
-            let cornerRadius = deviceWidth  * 0.13
-            let color        = playerVM.selectedShellColor
+            let color = appSettings.shellColor
 
-            ZStack {
-                // ── Body ──────────────────────────────────────────────────
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .fill(
-                        LinearGradient(
-                            colors: color.bodyGradient,
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: deviceWidth, height: deviceHeight)
-                    .shadow(color: .black.opacity(0.6), radius: 24, y: 12)
-
-                // Sheen highlight
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .fill(
-                        LinearGradient(
-                            colors: [
-                                Color.white.opacity(color.isLight ? 0.25 : 0.12),
-                                Color.clear
-                            ],
-                            startPoint: .top,
-                            endPoint: .center
-                        )
-                    )
-                    .frame(width: deviceWidth, height: deviceHeight)
+            ZStack(alignment: .top) {
+                // ── Full-screen shell background ─────────────────────
+                LinearGradient(
+                    colors: color.bodyGradient,
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
 
                 VStack(spacing: 0) {
-                    // ── Top decoration: front camera + earpiece ────────────
-                    topDecor(width: deviceWidth, color: color)
-                        .frame(height: deviceHeight * 0.085)
+                    // Top decoration inside safe area
+                    topBar(color: color)
+                        .padding(.top, geo.safeAreaInsets.top + 6)
 
-                    // ── Virtual screen ─────────────────────────────────────
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(Color.black)
-                            .frame(width: screenWidth, height: screenHeight)
+                    // Embedded screen area
+                    screenPanel(geo: geo)
+                        .padding(.horizontal, 14)
+                        .padding(.top, 8)
 
-                        ClassicMusicScreen()
-                            .frame(width: screenWidth, height: screenHeight)
-                            .clipShape(RoundedRectangle(cornerRadius: 4))
-                    }
-                    .frame(width: screenWidth, height: screenHeight)
+                    Spacer(minLength: 0)
 
-                    Spacer()
-
-                    // ── Home button ────────────────────────────────────────
-                    homeButton(color: color, deviceWidth: deviceWidth)
-                        .padding(.bottom, deviceHeight * 0.035)
+                    // Touch wheel
+                    TouchWheelView()
+                        .frame(
+                            width: wheelDiameter(geo),
+                            height: wheelDiameter(geo)
+                        )
+                        .padding(.bottom, geo.safeAreaInsets.bottom + 10)
                 }
-                .frame(width: deviceWidth, height: deviceHeight)
-
-                // ── Side buttons ───────────────────────────────────────────
-                sideButtons(deviceWidth: deviceWidth,
-                            deviceHeight: deviceHeight,
-                            color: color)
+                .ignoresSafeArea(edges: .top)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .ignoresSafeArea()
     }
 
-    // MARK: - Sub-components
+    // MARK: - Top bar
 
-    @ViewBuilder
-    private func topDecor(width: CGFloat, color: ShellColor) -> some View {
-        let tint = color.isLight ? Color.black.opacity(0.4) : Color.white.opacity(0.4)
-        HStack(spacing: width * 0.06) {
+    private func topBar(color: ShellColor) -> some View {
+        let tint = color.isLight ? Color.black.opacity(0.35) : Color.white.opacity(0.35)
+        return HStack(spacing: 14) {
+            // Front camera dot
             Circle()
                 .fill(tint)
-                .frame(width: width * 0.04, height: width * 0.04)
+                .frame(width: 6, height: 6)
+            // Earpiece grille
             Capsule()
                 .fill(tint)
-                .frame(width: width * 0.22, height: width * 0.025)
+                .frame(width: 52, height: 5)
         }
+        .frame(maxWidth: .infinity)
+        .frame(height: 24)
     }
 
-    @ViewBuilder
-    private func homeButton(color: ShellColor, deviceWidth: CGFloat) -> some View {
-        let size = deviceWidth * 0.155
-        Button {
-            withAnimation(.spring(response: 0.2, dampingFraction: 0.5)) {
-                homeButtonPressed = true
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                withAnimation { homeButtonPressed = false }
-                playerVM.activeSection = .music
-            }
-            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        } label: {
-            ZStack {
-                Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [color.homeButtonColor.opacity(0.9),
-                                     color.homeButtonColor],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
-                    )
-                    .frame(width: size, height: size)
-                    .overlay(Circle().stroke(Color.white.opacity(0.15), lineWidth: 1.5))
-                    .shadow(color: .black.opacity(0.35), radius: 4, y: 2)
+    // MARK: - Screen panel
 
-                RoundedRectangle(cornerRadius: size * 0.08)
-                    .stroke(
-                        color.isLight ? Color.black.opacity(0.2) : Color.white.opacity(0.25),
-                        lineWidth: size * 0.06
-                    )
-                    .frame(width: size * 0.4, height: size * 0.4)
-            }
-            .scaleEffect(homeButtonPressed ? 0.88 : 1.0)
+    private func screenPanel(geo: GeometryProxy) -> some View {
+        let h = screenHeight(geo)
+        return ZStack {
+            // Screen bezel
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.black)
+                .shadow(color: .black.opacity(0.55), radius: 8, y: 3)
+
+            // Screen content
+            ClassicMusicScreen()
+                .clipShape(RoundedRectangle(cornerRadius: 14))
         }
-        .buttonStyle(.plain)
+        .frame(height: h)
     }
 
-    @ViewBuilder
-    private func sideButtons(deviceWidth: CGFloat,
-                              deviceHeight: CGFloat,
-                              color: ShellColor) -> some View {
-        let btnW: CGFloat = deviceWidth * 0.028
-        let accent = color.isLight
-            ? color.bodyGradient[0].opacity(0.6)
-            : Color.white.opacity(0.25)
+    // MARK: - Layout math
 
-        sideButton(width: btnW, height: deviceHeight * 0.07, color: accent)
-            .offset(x: -(deviceWidth / 2 + btnW / 2), y: -deviceHeight * 0.16)
-
-        sideButton(width: btnW, height: deviceHeight * 0.065, color: accent)
-            .offset(x: -(deviceWidth / 2 + btnW / 2), y: -deviceHeight * 0.07)
-
-        sideButton(width: btnW, height: deviceHeight * 0.055, color: accent)
-            .offset(x: deviceWidth / 2 + btnW / 2, y: -deviceHeight * 0.40)
+    private func screenHeight(_ geo: GeometryProxy) -> CGFloat {
+        let total   = geo.size.height
+        let wheel   = wheelDiameter(geo)
+        let topBar  = CGFloat(30)
+        let topPad  = geo.safeAreaInsets.top + 6 + 8
+        let botPad  = geo.safeAreaInsets.bottom + 10
+        let spacing = CGFloat(12)    // spacer + padding
+        return max(200, total - wheel - topBar - topPad - botPad - spacing)
     }
 
-    private func sideButton(width: CGFloat, height: CGFloat, color: Color) -> some View {
-        RoundedRectangle(cornerRadius: width * 0.4)
-            .fill(color)
-            .frame(width: width, height: height)
+    private func wheelDiameter(_ geo: GeometryProxy) -> CGFloat {
+        // Wheel takes ~38% of screen width, capped so it stays comfortable
+        min(geo.size.width * 0.80, 300)
     }
 }
 
@@ -163,5 +111,5 @@ struct RetroShellView: View {
     RetroShellView()
         .environmentObject(MusicPlayerViewModel())
         .environmentObject(PurchaseManager())
-        .background(Color.black)
+        .environmentObject(AppSettings())
 }
