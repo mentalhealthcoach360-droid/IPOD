@@ -50,16 +50,6 @@ struct MainMenuView: View {
                 .font(.system(size: 17, weight: .semibold, design: .rounded))
                 .foregroundStyle(Color.white)
 
-            if purchaseManager.isInTrial && !purchaseManager.isUnlocked {
-                Text("TRIAL")
-                    .font(.system(size: 9, weight: .bold))
-                    .foregroundStyle(Color.green)
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 2)
-                    .background(Color.green.opacity(0.18))
-                    .cornerRadius(6)
-            }
-
             Spacer()
 
             Text(Date(), style: .time)

@@ -12,9 +12,9 @@ struct SettingsView: View {
             Color(white: 0.08).ignoresSafeArea()
 
             List {
-                // Trial / unlock banner
+                // Unlock banner (shown only while not yet purchased)
                 if !purchaseManager.hasFullAccess {
-                    Section { trialBannerRow }
+                    Section { unlockBannerRow }
                         .listSectionSpacing(8)
                 }
 
@@ -73,52 +73,39 @@ struct SettingsView: View {
         }
     }
 
-    // MARK: - Trial banner
+    // MARK: - Unlock banner
 
-    private var trialBannerRow: some View {
+    private var unlockBannerRow: some View {
         Button { showPaywall = true } label: {
             HStack(spacing: 14) {
-                Image(systemName: purchaseManager.isInTrial ? "clock.badge" : "lock.fill")
+                Image(systemName: "lock.fill")
                     .font(.system(size: 20))
-                    .foregroundStyle(purchaseManager.isInTrial ? Color.green : Color.yellow)
+                    .foregroundStyle(Color.yellow)
                     .frame(width: 30)
 
                 VStack(alignment: .leading, spacing: 3) {
-                    if purchaseManager.isInTrial {
-                        Text("Free to try — active")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundStyle(Color.white)
-                        Text("\(purchaseManager.trialDaysRemaining) day\(purchaseManager.trialDaysRemaining == 1 ? "" : "s") left to try for free")
-                            .font(.system(size: 12))
-                            .foregroundStyle(Color.white.opacity(0.6))
-                    } else {
-                        Text("Unlock full access")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundStyle(Color.white)
-                        Text("One-time \(purchaseManager.formattedPrice) · No subscription")
-                            .font(.system(size: 12))
-                            .foregroundStyle(Color.white.opacity(0.6))
-                    }
+                    Text("Unlock full access")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(Color.white)
+                    Text("One-time \(purchaseManager.formattedPrice) · No subscription")
+                        .font(.system(size: 12))
+                        .foregroundStyle(Color.white.opacity(0.6))
                 }
 
                 Spacer()
 
-                if !purchaseManager.isInTrial {
-                    Text("Unlock")
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundStyle(Color.black)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 5)
-                        .background(Color.white)
-                        .cornerRadius(12)
-                }
+                Text("Unlock")
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundStyle(Color.black)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 5)
+                    .background(Color.white)
+                    .cornerRadius(12)
             }
             .padding(.vertical, 6)
         }
         .buttonStyle(.plain)
-        .listRowBackground(
-            (purchaseManager.isInTrial ? Color.green : Color.yellow).opacity(0.08)
-        )
+        .listRowBackground(Color.yellow.opacity(0.08))
     }
 
     // MARK: - Shell colour picker

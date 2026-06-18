@@ -51,8 +51,12 @@ struct PaywallView: View {
                     .foregroundStyle(Color.white)
                     .multilineTextAlignment(.center)
 
-                trialBadge
+                Text("One-time purchase · No subscription · No recurring charges")
+                    .font(.system(size: 13))
+                    .foregroundStyle(Color.white.opacity(0.5))
+                    .multilineTextAlignment(.center)
                     .padding(.top, 8)
+                    .padding(.horizontal, 28)
 
                 // Feature list
                 featureList
@@ -67,39 +71,22 @@ struct PaywallView: View {
                     .padding(.bottom, 32)
             }
         }
-        .onAppear { purchaseManager.refreshTrialStatus() }
     }
 
-    // MARK: - Sub-views
-
-    @ViewBuilder
-    private var trialBadge: some View {
-        if purchaseManager.isInTrial {
-            Text("\(purchaseManager.trialDaysRemaining) day\(purchaseManager.trialDaysRemaining == 1 ? "" : "s") left to try for free")
-                .font(.system(size: 13, weight: .semibold))
-                .foregroundStyle(Color.green)
-                .padding(.horizontal, 14)
-                .padding(.vertical, 5)
-                .background(Color.green.opacity(0.15))
-                .cornerRadius(20)
-        } else if !purchaseManager.isUnlocked {
-            Text("Free to try for 7 days")
-                .font(.system(size: 13, weight: .semibold))
-                .foregroundStyle(Color.yellow)
-                .padding(.horizontal, 14)
-                .padding(.vertical, 5)
-                .background(Color.yellow.opacity(0.12))
-                .cornerRadius(20)
-        }
-    }
+    // MARK: - Feature list
 
     private var featureList: some View {
         VStack(alignment: .leading, spacing: 14) {
-            featureRow(icon: "music.note.list",     text: "Full local music library — unlimited songs")
-            featureRow(icon: "text.badge.checkmark",text: "All playlists")
-            featureRow(icon: "antenna.radiowaves.left.and.right", text: "Streaming library access")
-            featureRow(icon: "paintpalette",         text: "All five shell colours")
-            featureRow(icon: "infinity",             text: "One-time unlock — no subscription ever")
+            featureRow(icon: "music.note.list",
+                       text: "Full local library — unlimited songs")
+            featureRow(icon: "text.badge.checkmark",
+                       text: "All playlists")
+            featureRow(icon: "antenna.radiowaves.left.and.right",
+                       text: "Streaming library access")
+            featureRow(icon: "paintpalette",
+                       text: "All five shell colours")
+            featureRow(icon: "infinity",
+                       text: "Unlock once, yours forever")
         }
     }
 
@@ -115,9 +102,10 @@ struct PaywallView: View {
         }
     }
 
+    // MARK: - CTA buttons
+
     private var ctaStack: some View {
         VStack(spacing: 12) {
-            // Primary: unlock
             Button {
                 Task { await purchaseManager.purchase() }
             } label: {
@@ -137,7 +125,6 @@ struct PaywallView: View {
             }
             .disabled(purchaseManager.purchaseInProgress)
 
-            // Secondary: restore
             Button {
                 Task { await purchaseManager.restorePurchases() }
             } label: {
@@ -149,17 +136,11 @@ struct PaywallView: View {
                         .foregroundStyle(Color.white.opacity(0.55))
                 }
             }
-
-            // Fine print
-            Text("One-time purchase · No subscription · No recurring charges")
-                .font(.system(size: 11))
-                .foregroundStyle(Color.white.opacity(0.3))
-                .multilineTextAlignment(.center)
         }
     }
 }
 
-/// Small inline banner shown inside library views when the free cap is reached.
+/// Small inline banner shown when the free-tier song cap is reached.
 struct UpgradeBanner: View {
     @EnvironmentObject var purchaseManager: PurchaseManager
     @State private var showPaywall = false
@@ -196,8 +177,7 @@ struct UpgradeBanner: View {
         }
         .buttonStyle(.plain)
         .sheet(isPresented: $showPaywall) {
-            PaywallView()
-                .environmentObject(purchaseManager)
+            PaywallView().environmentObject(purchaseManager)
         }
     }
 }

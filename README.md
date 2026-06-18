@@ -4,7 +4,7 @@
 
 A full-screen iOS experience where the entire display becomes the retro music device — large interactive touch wheel at the bottom, music player screen at the top, no wasted space.
 
-**Free to download.** The app is free to try for 7 days from first launch — no payment required. After that, a one-time $4.99 in-app purchase unlocks everything permanently. This is a **non-consumable IAP, not an auto-renewable subscription** — users are never charged again.
+**Free to download.** The free tier lets you browse the full retro interface and play up to 3 local tracks per session. A one-time $4.99 in-app purchase unlocks everything permanently — unlimited songs, all playlists, streaming library, and all 5 shell colours. This is a **non-consumable IAP, not a subscription** — one charge, never recurring.
 
 ---
 
@@ -37,15 +37,14 @@ Your entire screen becomes a retro portable music player. The shell background f
 
 | Tier | Price | What you get |
 |------|-------|-------------|
-| **Free** | $0 | Browse the full retro interface, play up to 3 local tracks per session |
-| **Free to try** | Free, 7 days | Full access from first launch — no payment required |
+| **Free** | $0 | Browse the retro interface, play up to 3 local tracks per session, black shell only |
 | **Lifetime unlock** | $4.99 (one-time IAP) | Unlimited songs, all playlists, streaming library, all 5 shell colours |
 
 - Bundle ID: `com.marcustrise.retrowheel`
 - Product ID: `com.marcustrise.retrowheel.unlock`
 - IAP type: **Non-consumable** — one-time purchase, restores automatically via StoreKit 2
-- **Not an auto-renewable subscription** — users are never charged again after the one-time unlock
-- Free to try for 7 days from first launch (tracked locally — no StoreKit subscription needed)
+- **Not an auto-renewable subscription** — one charge, never recurring
+- No trial period
 
 ### Music Player
 | Screen | What it does |
@@ -102,8 +101,8 @@ RetroWheel/
     ├── Services/
     │   ├── MusicKitService.swift      — MusicKit API calls
     │   ├── LocalMusicService.swift    — Local media library queries
-    │   ├── PurchaseManager.swift      — StoreKit 2 non-consumable IAP, 7-day free-to-try period, free-tier limits
-    │   └── KeychainHelper.swift       — Minimal Keychain wrapper; stores trial start date across reinstalls
+    │   ├── PurchaseManager.swift      — StoreKit 2 non-consumable IAP, free-tier song limit
+    │   └── KeychainHelper.swift       — Keychain wrapper (Security.framework, no third-party deps)
     ├── Models/
     │   ├── Song.swift                 — Unified song model (streaming + local)
     │   ├── ShellColor.swift           — 5-colour enum with gradient definitions
@@ -192,7 +191,7 @@ On first launch the app requests access to your music library. Tap **Allow** to 
 >
 > Your screen becomes a retro music device — body, home button, side buttons, and all. Browse by song, artist, or album. Connect your streaming library or play tracks synced from your computer. Five colour options. Tap the home button and feel it click.
 >
-> **Free to download.** The app is free to try for 7 days — no payment required. After that, unlock everything permanently for a one-time $4.99. Not a subscription. No recurring charges. Ever.
+> **Free to download.** Play up to 3 tracks with the free tier to experience the retro wheel interface. Unlock everything permanently for a one-time $4.99 — no subscription, no recurring charges.
 
 ---
 
@@ -203,18 +202,9 @@ On first launch the app requests access to your music library. Tap **Allow** to 
 - **RetroShellView** is 100% SwiftUI gradients and shapes — no image assets, no UIKit.
 - Zero third-party dependencies.
 
-### Trial start date — Keychain, not UserDefaults
+### KeychainHelper
 
-The 7-day free-to-try start date is stored in the **Keychain** (via `KeychainHelper`), not `UserDefaults`.
-
-| Storage | Survives reinstall? | Survives device erase? |
-|---------|--------------------|-----------------------|
-| UserDefaults | No — wiped on delete | No |
-| Keychain (`kSecAttrAccessibleAfterFirstUnlock`) | **Yes** | No — correct behaviour |
-
-This is the simplest App Store-friendly approach: no server, no login, no analytics, no subscriptions. A user who deletes and reinstalls still gets the same remaining trial days. A full device erase resets the trial, which is acceptable since the user can always restore their paid unlock via **Restore Purchase**.
-
-The implementation is in `KeychainHelper.swift` (≈60 lines, no third-party dependencies, uses only `Security.framework`).
+`KeychainHelper.swift` (≈60 lines, `Security.framework` only, no third-party dependencies) is included as reusable infrastructure and compiles cleanly. It is not called in the current build.
 
 ---
 
