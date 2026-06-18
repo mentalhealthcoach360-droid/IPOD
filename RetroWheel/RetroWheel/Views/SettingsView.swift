@@ -4,6 +4,7 @@ import MusicKit
 struct SettingsView: View {
     @EnvironmentObject var playerVM: MusicPlayerViewModel
     @EnvironmentObject var purchaseManager: PurchaseManager
+    @EnvironmentObject var appSettings: AppSettings
     @State private var showPaywall = false
 
     var body: some View {
@@ -13,15 +14,29 @@ struct SettingsView: View {
             List {
                 // Trial / unlock banner
                 if !purchaseManager.hasFullAccess {
-                    Section {
-                        trialBannerRow
-                    }
-                    .listSectionSpacing(8)
+                    Section { trialBannerRow }
+                        .listSectionSpacing(8)
                 }
 
                 // Shell colour picker
-                Section("Shell Colour") {
-                    shellColorPicker
+                Section("Shell Colour") { shellColorPicker }
+                    .listSectionSpacing(8)
+
+                // Interaction
+                Section("Interaction") {
+                    toggleRow(
+                        icon: "hand.tap",
+                        label: "Haptic Feedback",
+                        color: .blue,
+                        isOn: $appSettings.hapticsEnabled
+                    )
+                    toggleRow(
+                        icon: "speaker.wave.1",
+                        label: "Click Sounds",
+                        color: .green,
+                        isOn: $appSettings.clickSoundsEnabled
+                    )
+                    sensitivityRow
                 }
                 .listSectionSpacing(8)
 
@@ -34,13 +49,20 @@ struct SettingsView: View {
 
                 // About
                 Section("About") {
-                    labelRow(icon: "app.badge",   label: "Version",  value: "1.0.0")
-                    labelRow(icon: "purchased",    label: "License",  value: purchaseManager.isUnlocked ? "Unlocked" : "Free")
+                    labelRow(icon: "app.badge", label: "Version", value: "1.0")
+                    labelRow(icon: "purchased",
+                             label: "License",
+                             value: purchaseManager.isUnlocked ? "Unlocked" : "Free")
+                    Button("Restore Purchase") {
+                        Task { await purchaseManager.restorePurchases() }
+                    }
+                    .font(.system(size: 14))
+                    .foregroundStyle(Color.white.opacity(0.7))
+                    .listRowBackground(Color.white.opacity(0.07))
                 }
             }
             .listStyle(.insetGrouped)
             .scrollContentBackground(.hidden)
-            .listRowBackground(Color.white.opacity(0.07))
         }
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
@@ -115,14 +137,16 @@ struct SettingsView: View {
     }
 
     private func colorSwatch(_ color: ShellColor) -> some View {
-        let isSelected  = playerVM.selectedShellColor == color
+        let isSelected  = appSettings.shellColor == color
         let isAvailable = purchaseManager.hasFullAccess || color == .black
         return Button {
             if isAvailable {
                 withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                    playerVM.selectedShellColor = color
+                    appSettings.shellColor = color
                 }
-                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                if appSettings.hapticsEnabled {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }
             } else {
                 showPaywall = true
             }
@@ -130,13 +154,9 @@ struct SettingsView: View {
             VStack(spacing: 6) {
                 ZStack {
                     Circle()
-                        .fill(
-                            LinearGradient(
-                                colors: color.bodyGradient,
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
+                        .fill(LinearGradient(colors: color.bodyGradient,
+                                             startPoint: .topLeading,
+                                             endPoint: .bottomTrailing))
                         .frame(width: 40, height: 40)
                         .opacity(isAvailable ? 1.0 : 0.45)
                     if isSelected && isAvailable {
@@ -153,11 +173,59 @@ struct SettingsView: View {
                 Text(color.rawValue)
                     .font(.system(size: 10))
                     .foregroundStyle(isSelected && isAvailable
-                                     ? Color.white
-                                     : Color.white.opacity(0.4))
+                                     ? Color.white : Color.white.opacity(0.4))
             }
         }
         .buttonStyle(.plain)
+    }
+
+    // MARK: - Interaction rows
+
+    private func toggleRow(icon: String,
+                            label: String,
+                            color: Color,
+                            isOn: Binding<Bool>) -> some View {
+        Toggle(isOn: isOn) {
+            HStack(spacing: 12) {
+                Image(systemName: icon)
+                    .foregroundStyle(color)
+                    .frame(width: 28)
+                Text(label)
+                    .foregroundStyle(Color.white)
+            }
+        }
+        .tint(color)
+        .listRowBackground(Color.white.opacity(0.07))
+    }
+
+    private var sensitivityRow: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 12) {
+                Image(systemName: "dial.medium")
+                    .foregroundStyle(Color.orange)
+                    .frame(width: 28)
+                Text("Wheel Sensitivity")
+                    .foregroundStyle(Color.white)
+                Spacer()
+                Text(sensitivityLabel)
+                    .font(.system(size: 12))
+                    .foregroundStyle(Color.white.opacity(0.5))
+            }
+            Slider(value: $appSettings.wheelSensitivity, in: 0.5...2.0, step: 0.25)
+                .tint(Color.orange)
+                .padding(.leading, 40)
+        }
+        .padding(.vertical, 4)
+        .listRowBackground(Color.white.opacity(0.07))
+    }
+
+    private var sensitivityLabel: String {
+        switch appSettings.wheelSensitivity {
+        case ..<0.75:  return "Slow"
+        case ..<1.25:  return "Default"
+        case ..<1.75:  return "Fast"
+        default:       return "Very Fast"
+        }
     }
 
     // MARK: - Music source rows
@@ -178,10 +246,8 @@ struct SettingsView: View {
             }
             Spacer()
             if purchaseManager.hasFullAccess {
-                statusBadge(
-                    text: authStatusText,
-                    color: playerVM.musicAuthStatus == .authorized ? .green : .orange
-                )
+                statusBadge(text: authStatusText,
+                            color: playerVM.musicAuthStatus == .authorized ? .green : .orange)
             } else {
                 Image(systemName: "lock.fill")
                     .font(.system(size: 13))
@@ -206,16 +272,12 @@ struct SettingsView: View {
             Text("Local Music Library")
                 .foregroundStyle(Color.white)
             Spacer()
-            statusBadge(
-                text: playerVM.localAuthGranted ? "Connected" : "Tap to Allow",
-                color: playerVM.localAuthGranted ? .green : .orange
-            )
+            statusBadge(text: playerVM.localAuthGranted ? "Connected" : "Tap to Allow",
+                        color: playerVM.localAuthGranted ? .green : .orange)
         }
         .contentShape(Rectangle())
         .onTapGesture {
-            if !playerVM.localAuthGranted {
-                playerVM.requestLocalLibraryAccess()
-            }
+            if !playerVM.localAuthGranted { playerVM.requestLocalLibraryAccess() }
         }
         .listRowBackground(Color.white.opacity(0.07))
     }
@@ -237,8 +299,7 @@ struct SettingsView: View {
             Image(systemName: icon)
                 .foregroundStyle(Color.white.opacity(0.6))
                 .frame(width: 28)
-            Text(label)
-                .foregroundStyle(Color.white)
+            Text(label).foregroundStyle(Color.white)
             Spacer()
             Text(value)
                 .foregroundStyle(Color.white.opacity(0.5))
@@ -262,4 +323,5 @@ struct SettingsView: View {
     SettingsView()
         .environmentObject(MusicPlayerViewModel())
         .environmentObject(PurchaseManager())
+        .environmentObject(AppSettings())
 }

@@ -8,6 +8,7 @@ enum LibrarySection: String, CaseIterable, Identifiable {
     case artists     = "Artists"
     case albums      = "Albums"
     case songs       = "Songs"
+    case extras      = "Extras"
     case settings    = "Settings"
 
     var id: String { rawValue }
@@ -20,6 +21,7 @@ enum LibrarySection: String, CaseIterable, Identifiable {
         case .artists:    return "person.2"
         case .albums:     return "square.stack"
         case .songs:      return "music.quarternote.3"
+        case .extras:     return "gamecontroller"
         case .settings:   return "gearshape"
         }
     }

@@ -4,15 +4,16 @@ import SwiftUI
 struct MainMenuView: View {
     @EnvironmentObject var playerVM: MusicPlayerViewModel
     @EnvironmentObject var purchaseManager: PurchaseManager
+    @EnvironmentObject var appSettings: AppSettings
 
     private let menuItems: [LibrarySection] = [
-        .nowPlaying, .playlists, .artists, .albums, .songs, .settings
+        .nowPlaying, .playlists, .artists, .albums, .songs, .extras, .settings
     ]
 
     var body: some View {
         ZStack {
             LinearGradient(
-                colors: [Color(white: 0.12), Color(white: 0.08)],
+                colors: [Color(white: 0.12), Color(white: 0.07)],
                 startPoint: .top,
                 endPoint: .bottom
             )
@@ -26,7 +27,7 @@ struct MainMenuView: View {
                         menuRow(item)
                     }
                     .listRowBackground(Color.clear)
-                    .listRowSeparatorTint(Color.white.opacity(0.12))
+                    .listRowSeparatorTint(Color.white.opacity(0.10))
                 }
                 .listStyle(.plain)
                 .scrollContentBackground(.hidden)
@@ -42,15 +43,14 @@ struct MainMenuView: View {
         }
     }
 
-    // MARK: - Sub-views
+    // MARK: - Header
 
     private var menuHeader: some View {
-        HStack {
+        HStack(spacing: 8) {
             Text("RetroWheel")
-                .font(.system(size: 18, weight: .semibold, design: .rounded))
+                .font(.system(size: 17, weight: .semibold, design: .rounded))
                 .foregroundStyle(Color.white)
-            Spacer()
-            // Trial indicator badge
+
             if purchaseManager.isInTrial && !purchaseManager.isUnlocked {
                 Text("TRIAL")
                     .font(.system(size: 9, weight: .bold))
@@ -60,51 +60,65 @@ struct MainMenuView: View {
                     .background(Color.green.opacity(0.18))
                     .cornerRadius(6)
             }
-            Text(Date(), style: .time)
-                .font(.system(size: 12, weight: .regular, design: .monospaced))
-                .foregroundStyle(Color.white.opacity(0.6))
-                .padding(.leading, 6)
-        }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 8)
-        .background(Color.white.opacity(0.05))
-    }
-
-    @ViewBuilder
-    private func menuRow(_ item: LibrarySection) -> some View {
-        let isLocked = lockedSection(item)
-        HStack(spacing: 14) {
-            Image(systemName: item.systemIcon)
-                .font(.system(size: 16, weight: .medium))
-                .foregroundStyle(isLocked ? Color.white.opacity(0.35) : Color.white.opacity(0.85))
-                .frame(width: 28)
-
-            Text(item.rawValue)
-                .font(.system(size: 15, weight: .medium, design: .rounded))
-                .foregroundStyle(isLocked ? Color.white.opacity(0.45) : Color.white)
 
             Spacer()
 
-            if isLocked {
+            Text(Date(), style: .time)
+                .font(.system(size: 12, design: .monospaced))
+                .foregroundStyle(Color.white.opacity(0.5))
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 9)
+        .background(Color.white.opacity(0.05))
+    }
+
+    // MARK: - Menu rows
+
+    @ViewBuilder
+    private func menuRow(_ item: LibrarySection) -> some View {
+        let locked = isLocked(item)
+        HStack(spacing: 14) {
+            Image(systemName: item.systemIcon)
+                .font(.system(size: 15, weight: .medium))
+                .foregroundStyle(locked ? Color.white.opacity(0.30) : rowAccent(item))
+                .frame(width: 26)
+
+            Text(item.rawValue)
+                .font(.system(size: 14, weight: .medium, design: .rounded))
+                .foregroundStyle(locked ? Color.white.opacity(0.40) : Color.white)
+
+            Spacer()
+
+            if locked {
                 Image(systemName: "lock.fill")
                     .font(.system(size: 11))
-                    .foregroundStyle(Color.yellow.opacity(0.7))
+                    .foregroundStyle(Color.yellow.opacity(0.6))
             }
         }
         .padding(.vertical, 5)
     }
 
-    /// Playlists are locked in free tier.
-    private func lockedSection(_ section: LibrarySection) -> Bool {
+    private func isLocked(_ section: LibrarySection) -> Bool {
         guard !purchaseManager.hasFullAccess else { return false }
         return section == .playlists
     }
+
+    private func rowAccent(_ section: LibrarySection) -> Color {
+        switch section {
+        case .nowPlaying: return Color.white.opacity(0.9)
+        case .extras:     return Color(red: 0.4, green: 0.8, blue: 0.4).opacity(0.9)
+        case .settings:   return Color.white.opacity(0.65)
+        default:          return Color.white.opacity(0.80)
+        }
+    }
+
+    // MARK: - Mini now-playing
 
     @ViewBuilder
     private func miniNowPlaying(song: Song) -> some View {
         NavigationLink(value: LibrarySection.nowPlaying) {
             HStack(spacing: 10) {
-                ArtworkView(song: song, size: 38)
+                ArtworkView(song: song, size: 36)
                     .cornerRadius(4)
 
                 VStack(alignment: .leading, spacing: 1) {
@@ -114,7 +128,7 @@ struct MainMenuView: View {
                         .lineLimit(1)
                     Text(song.artist)
                         .font(.system(size: 11))
-                        .foregroundStyle(Color.white.opacity(0.65))
+                        .foregroundStyle(Color.white.opacity(0.60))
                         .lineLimit(1)
                 }
 
@@ -122,22 +136,25 @@ struct MainMenuView: View {
 
                 Button { playerVM.togglePlayPause() } label: {
                     Image(systemName: playerVM.isPlaying ? "pause.fill" : "play.fill")
-                        .font(.system(size: 18))
+                        .font(.system(size: 17))
                         .foregroundStyle(Color.white)
                 }
                 .buttonStyle(.plain)
-                .padding(.trailing, 6)
+                .padding(.trailing, 4)
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
-            .background(Color.white.opacity(0.07))
+            .background(Color.white.opacity(0.06))
         }
         .buttonStyle(.plain)
     }
 }
 
 #Preview {
-    MainMenuView()
-        .environmentObject(MusicPlayerViewModel())
-        .environmentObject(PurchaseManager())
+    NavigationStack {
+        MainMenuView()
+    }
+    .environmentObject(MusicPlayerViewModel())
+    .environmentObject(PurchaseManager())
+    .environmentObject(AppSettings())
 }
