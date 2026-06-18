@@ -4,7 +4,6 @@ import SwiftUI
 struct MainMenuView: View {
     @EnvironmentObject var playerVM: MusicPlayerViewModel
     @EnvironmentObject var purchaseManager: PurchaseManager
-    @EnvironmentObject var appSettings: AppSettings
 
     private let menuItems: [LibrarySection] = [
         .nowPlaying, .playlists, .artists, .albums, .songs, .extras, .settings

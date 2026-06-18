@@ -192,17 +192,19 @@ struct BrickBounceView: View {
     // MARK: - Canvas
 
     private func canvas(size: CGSize) -> some View {
-        let w = size.width
-        let h = size.height
-        let brickW = w / Double(BrickBounceGame.cols)
-        let brickH = h * 0.10
-        let brickTop = h * 0.06
+        // All layout values are explicitly CGFloat to avoid any type-inference ambiguity
+        let w: CGFloat = size.width
+        let h: CGFloat = size.height
+        let cols: CGFloat = CGFloat(BrickBounceGame.cols)
+        let brickW: CGFloat = w / cols
+        let brickH: CGFloat = h * 0.10
+        let brickTop: CGFloat = h * 0.06
 
         return ZStack(alignment: .topLeading) {
             // Background grid lines
             Path { p in
                 for c in 0...BrickBounceGame.cols {
-                    let x = Double(c) * brickW
+                    let x: CGFloat = CGFloat(c) * brickW
                     p.move(to: CGPoint(x: x, y: 0))
                     p.addLine(to: CGPoint(x: x, y: h))
                 }
@@ -220,8 +222,8 @@ struct BrickBounceView: View {
                         )
                         .frame(width: brickW - 3, height: brickH - 3)
                         .offset(
-                            x: Double(brick.col) * brickW + 1.5,
-                            y: brickTop + Double(brick.row) * brickH + 1.5
+                            x: CGFloat(brick.col) * brickW + 1.5,
+                            y: brickTop + CGFloat(brick.row) * brickH + 1.5
                         )
                 }
             }
@@ -235,19 +237,19 @@ struct BrickBounceView: View {
                         endPoint: .bottom
                     )
                 )
-                .frame(width: w * BrickBounceGame.paddleW,
-                       height: h * BrickBounceGame.paddleH)
-                .offset(x: game.paddleX * w,
-                        y: h * BrickBounceGame.paddleY)
+                .frame(width: w * CGFloat(BrickBounceGame.paddleW),
+                       height: h * CGFloat(BrickBounceGame.paddleH))
+                .offset(x: CGFloat(game.paddleX) * w,
+                        y: h * CGFloat(BrickBounceGame.paddleY))
 
             // Ball
             Circle()
                 .fill(Color.white)
                 .shadow(color: Color.white.opacity(0.6), radius: 4)
-                .frame(width: w * BrickBounceGame.ballR * 2,
-                       height: w * BrickBounceGame.ballR * 2)
-                .offset(x: game.ballX * w - w * BrickBounceGame.ballR,
-                        y: game.ballY * h - w * BrickBounceGame.ballR)
+                .frame(width: w * CGFloat(BrickBounceGame.ballR) * 2,
+                       height: w * CGFloat(BrickBounceGame.ballR) * 2)
+                .offset(x: CGFloat(game.ballX) * w - w * CGFloat(BrickBounceGame.ballR),
+                        y: CGFloat(game.ballY) * h - w * CGFloat(BrickBounceGame.ballR))
 
             // Overlay messages
             if game.phase == .waiting {
@@ -265,8 +267,10 @@ struct BrickBounceView: View {
         .gesture(
             DragGesture(minimumDistance: 0)
                 .onChanged { value in
-                    let pct = value.location.x / w
-                    game.paddleX = max(0, min(1 - BrickBounceGame.paddleW, pct - BrickBounceGame.paddleW / 2))
+                    // Explicit Double cast avoids CGFloat/Double min/max generic ambiguity
+                    let pct = Double(value.location.x / w)
+                    game.paddleX = max(0, min(1 - BrickBounceGame.paddleW,
+                                             pct - BrickBounceGame.paddleW / 2))
                     if game.phase == .waiting { game.phase = .playing }
                 }
         )

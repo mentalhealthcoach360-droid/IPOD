@@ -15,7 +15,6 @@ struct ClassicMusicScreen: View {
                     sectionView(for: section)
                 }
         }
-        .navigationViewStyle(.stack)
         .tint(.white)
         .onReceive(playerVM.$activeSection) { section in
             if section == .music {

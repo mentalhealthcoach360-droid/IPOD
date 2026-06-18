@@ -2,7 +2,7 @@ import SwiftUI
 
 /// Full-screen RetroWheel layout.
 ///
-/// The entire iPhone display becomes the retro music device:
+/// The entire display becomes the retro music device:
 ///  ┌─────────────────────────────┐
 ///  │  top bar  (camera · grille) │
 ///  │  ┌───────────────────────┐  │
