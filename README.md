@@ -1,8 +1,8 @@
 # RetroWheel
 
-> **RetroWheel** is a nostalgic touch-wheel music player designed for people who miss the simplicity of classic handheld MP3 players. Import your own songs, browse your library, and control playback with a smooth retro-inspired wheel interface.
+> **RetroWheel** is a nostalgic touch-wheel music player designed for people who miss the simplicity of classic handheld portable music players. Import your own songs, browse your library, and control playback with a smooth retro-inspired wheel interface.
 
-A skeuomorphic iOS app that fills your screen with a retro-styled handheld music player shell, with a fully functional music player running inside the virtual screen.
+A full-screen iOS experience where the entire display becomes the retro music device — large interactive touch wheel at the bottom, music player screen at the top, no wasted space.
 
 **Free to download.** The app is free to try for 7 days from first launch — no payment required. After that, a one-time $4.99 in-app purchase unlocks everything permanently. This is a **non-consumable IAP, not an auto-renewable subscription** — users are never charged again.
 
@@ -10,17 +10,28 @@ A skeuomorphic iOS app that fills your screen with a retro-styled handheld music
 
 ## What it looks like
 
-Your entire screen becomes a retro music device. The rounded metal body, the home button, the side volume rocker, and the sleep/wake button are all rendered in SwiftUI — no images, pure code. Tap the home button and it clicks with haptic feedback. The virtual screen inside hosts a clean, dark music player interface inspired by the golden era of handheld audio.
+Your entire screen becomes a retro portable music player. The shell background fills edge-to-edge in your chosen colour. The top portion holds the music player display (library menus, now-playing, artwork). The bottom holds a large circular touch wheel for transport and navigation. Everything is rendered in pure SwiftUI — no images, no external assets.
 
 ---
 
 ## Features
 
+### Full-Screen Experience
+- The entire display is the retro device — no black borders or wasted space
+- Shell colour fills edge-to-edge (five choices)
+- Music screen and large touch wheel scale to any device size
+
+### Touch Wheel
+- Rotary drag scrolls menus with haptic + click sound feedback
+- Top tap: back to menu
+- Left / right taps: previous / next track
+- Center button: play / pause
+- Sensitivity, haptics, and click sounds all adjustable in Settings
+
 ### Device Shell
-- Retro-styled handheld device proportions scaled to any iPhone screen
 - Five colour variants — **Black, White, Pink, Yellow, Blue** — switchable in Settings
-- Sheen highlight, body gradient, side buttons, and home button with press animation + haptic feedback
-- Portrait-only orientation locks the shell in place
+- Body gradient fills entire screen; home-button tap resets to main menu
+- Portrait-only orientation
 
 ### Monetization Model
 
@@ -160,7 +171,7 @@ On first launch the app requests access to your music library. Tap **Allow** to 
 ### App setup
 - [ ] Bundle ID is `com.marcustrise.retrowheel` — set your **Team** in Signing & Capabilities
 - [ ] Add a 1024×1024 app icon to `Assets.xcassets/AppIcon.appiconset/`
-- [ ] Screenshot on iPhone 6.7-inch and 6.5-inch for the listing
+- [ ] Screenshot on 6.7-inch and 6.5-inch display sizes for the App Store listing
 - [ ] Fill in App Store Connect metadata (name, subtitle, keywords, description)
 - [ ] Submit for review with category **Music**
 

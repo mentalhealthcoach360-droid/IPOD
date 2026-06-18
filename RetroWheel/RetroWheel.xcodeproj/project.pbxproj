@@ -30,6 +30,11 @@
 		A021 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F022 /* PurchaseManager.swift */; };
 		A022 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F023 /* PaywallView.swift */; };
 		A023 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F024 /* KeychainHelper.swift */; };
+		A024 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F026 /* AppSettings.swift */; };
+		A025 /* TouchWheelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F027 /* TouchWheelView.swift */; };
+		A026 /* ExtrasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F028 /* ExtrasView.swift */; };
+		A027 /* BrickBounceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F029 /* BrickBounceView.swift */; };
+		A028 /* TrailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F030 /* TrailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +63,11 @@
 		F023 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		F024 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
 		F025 /* RetroWheel.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = RetroWheel.storekit; sourceTree = "<group>"; };
+		F026 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		F027 /* TouchWheelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchWheelView.swift; sourceTree = "<group>"; };
+		F028 /* ExtrasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtrasView.swift; sourceTree = "<group>"; };
+		F029 /* BrickBounceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrickBounceView.swift; sourceTree = "<group>"; };
+		F030 /* TrailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailView.swift; sourceTree = "<group>"; };
 		PROD /* RetroWheel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RetroWheel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -123,6 +133,10 @@
 				F011 /* SettingsView.swift */,
 				F012 /* ArtworkView.swift */,
 				F023 /* PaywallView.swift */,
+				F027 /* TouchWheelView.swift */,
+				F028 /* ExtrasView.swift */,
+				F029 /* BrickBounceView.swift */,
+				F030 /* TrailView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -152,6 +166,7 @@
 				F016 /* Song.swift */,
 				F017 /* ShellColor.swift */,
 				F018 /* LibrarySection.swift */,
+				F026 /* AppSettings.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -255,6 +270,11 @@
 				A021 /* PurchaseManager.swift in Sources */,
 				A022 /* PaywallView.swift in Sources */,
 				A023 /* KeychainHelper.swift in Sources */,
+				A024 /* AppSettings.swift in Sources */,
+				A025 /* TouchWheelView.swift in Sources */,
+				A026 /* ExtrasView.swift in Sources */,
+				A027 /* BrickBounceView.swift in Sources */,
+				A028 /* TrailView.swift in Sources */,
 				A018 /* LibrarySection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
