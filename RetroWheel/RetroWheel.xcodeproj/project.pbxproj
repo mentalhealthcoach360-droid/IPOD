@@ -1,0 +1,476 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A001 /* RetroWheelApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F001 /* RetroWheelApp.swift */; };
+		A002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F002 /* ContentView.swift */; };
+		A003 /* RetroShellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F003 /* RetroShellView.swift */; };
+		A004 /* ClassicMusicScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F004 /* ClassicMusicScreen.swift */; };
+		A005 /* MainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F005 /* MainMenuView.swift */; };
+		A006 /* NowPlayingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006 /* NowPlayingView.swift */; };
+		A007 /* SongsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F007 /* SongsView.swift */; };
+		A008 /* ArtistsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F008 /* ArtistsView.swift */; };
+		A009 /* AlbumsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009 /* AlbumsView.swift */; };
+		A010 /* PlaylistsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F010 /* PlaylistsView.swift */; };
+		A011 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F011 /* SettingsView.swift */; };
+		A012 /* ArtworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F012 /* ArtworkView.swift */; };
+		A013 /* MusicPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F013 /* MusicPlayerViewModel.swift */; };
+		A014 /* MusicKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F014 /* MusicKitService.swift */; };
+		A015 /* LocalMusicService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F015 /* LocalMusicService.swift */; };
+		A016 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = F016 /* Song.swift */; };
+		A017 /* ShellColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F017 /* ShellColor.swift */; };
+		A018 /* LibrarySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F018 /* LibrarySection.swift */; };
+		A019 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F019 /* Assets.xcassets */; };
+		A020 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F020 /* Info.plist */; };
+		A021 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F022 /* PurchaseManager.swift */; };
+		A022 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F023 /* PaywallView.swift */; };
+		A023 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F024 /* KeychainHelper.swift */; };
+		A024 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F026 /* AppSettings.swift */; };
+		A025 /* TouchWheelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F027 /* TouchWheelView.swift */; };
+		A026 /* ExtrasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F028 /* ExtrasView.swift */; };
+		A027 /* BrickBounceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F029 /* BrickBounceView.swift */; };
+		A028 /* TrailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F030 /* TrailView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		F001 /* RetroWheelApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetroWheelApp.swift; sourceTree = "<group>"; };
+		F002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F003 /* RetroShellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetroShellView.swift; sourceTree = "<group>"; };
+		F004 /* ClassicMusicScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassicMusicScreen.swift; sourceTree = "<group>"; };
+		F005 /* MainMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuView.swift; sourceTree = "<group>"; };
+		F006 /* NowPlayingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingView.swift; sourceTree = "<group>"; };
+		F007 /* SongsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongsView.swift; sourceTree = "<group>"; };
+		F008 /* ArtistsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistsView.swift; sourceTree = "<group>"; };
+		F009 /* AlbumsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsView.swift; sourceTree = "<group>"; };
+		F010 /* PlaylistsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistsView.swift; sourceTree = "<group>"; };
+		F011 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		F012 /* ArtworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkView.swift; sourceTree = "<group>"; };
+		F013 /* MusicPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerViewModel.swift; sourceTree = "<group>"; };
+		F014 /* MusicKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicKitService.swift; sourceTree = "<group>"; };
+		F015 /* LocalMusicService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalMusicService.swift; sourceTree = "<group>"; };
+		F016 /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
+		F017 /* ShellColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellColor.swift; sourceTree = "<group>"; };
+		F018 /* LibrarySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrarySection.swift; sourceTree = "<group>"; };
+		F019 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F020 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F021 /* RetroWheel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RetroWheel.entitlements; sourceTree = "<group>"; };
+		F022 /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
+		F023 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		F024 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
+		F025 /* RetroWheel.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = RetroWheel.storekit; sourceTree = "<group>"; };
+		F026 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		F027 /* TouchWheelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchWheelView.swift; sourceTree = "<group>"; };
+		F028 /* ExtrasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtrasView.swift; sourceTree = "<group>"; };
+		F029 /* BrickBounceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrickBounceView.swift; sourceTree = "<group>"; };
+		F030 /* TrailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailView.swift; sourceTree = "<group>"; };
+		PROD /* RetroWheel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RetroWheel.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FWKPH /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = ();
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		ROOT /* = */ = {
+			isa = PBXGroup;
+			children = (
+				APPGRP /* RetroWheel */,
+				PRODGRP /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		PRODGRP /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				PROD /* RetroWheel.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		APPGRP /* RetroWheel */ = {
+			isa = PBXGroup;
+			children = (
+				APPSUBGRP /* App */,
+				VIEWSGRP /* Views */,
+				VMGRP /* ViewModels */,
+				SVCGRP /* Services */,
+				MODELGRP /* Models */,
+				RESGRP /* Resources */,
+			);
+			path = RetroWheel;
+			sourceTree = "<group>";
+		};
+		APPSUBGRP /* App */ = {
+			isa = PBXGroup;
+			children = (
+				F001 /* RetroWheelApp.swift */,
+				F002 /* ContentView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		VIEWSGRP /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F003 /* RetroShellView.swift */,
+				F004 /* ClassicMusicScreen.swift */,
+				F005 /* MainMenuView.swift */,
+				F006 /* NowPlayingView.swift */,
+				F007 /* SongsView.swift */,
+				F008 /* ArtistsView.swift */,
+				F009 /* AlbumsView.swift */,
+				F010 /* PlaylistsView.swift */,
+				F011 /* SettingsView.swift */,
+				F012 /* ArtworkView.swift */,
+				F023 /* PaywallView.swift */,
+				F027 /* TouchWheelView.swift */,
+				F028 /* ExtrasView.swift */,
+				F029 /* BrickBounceView.swift */,
+				F030 /* TrailView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		VMGRP /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				F013 /* MusicPlayerViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		SVCGRP /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				F014 /* MusicKitService.swift */,
+				F015 /* LocalMusicService.swift */,
+				F022 /* PurchaseManager.swift */,
+				F024 /* KeychainHelper.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		MODELGRP /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F016 /* Song.swift */,
+				F017 /* ShellColor.swift */,
+				F018 /* LibrarySection.swift */,
+				F026 /* AppSettings.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		RESGRP /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F019 /* Assets.xcassets */,
+				F020 /* Info.plist */,
+				F021 /* RetroWheel.entitlements */,
+				F025 /* RetroWheel.storekit */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		TARGET /* RetroWheel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CFGLIST /* Build configuration list for PBXNativeTarget "RetroWheel" */;
+			buildPhases = (
+				SRCPH /* Sources */,
+				FWKPH /* Frameworks */,
+				RESPH /* Resources */,
+			);
+			buildRules = ();
+			dependencies = ();
+			name = RetroWheel;
+			productName = RetroWheel;
+			productReference = PROD /* RetroWheel.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		PROJ /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					TARGET = {
+						CreatedOnToolsVersion = 15.4;
+					};
+				};
+			};
+			buildConfigurationList = PROJCFGLIST /* Build configuration list for PBXProject "RetroWheel" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = ROOT;
+			productRefGroup = PRODGRP /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				TARGET /* RetroWheel */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		RESPH /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A019 /* Assets.xcassets in Resources */,
+				A020 /* Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		SRCPH /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A001 /* RetroWheelApp.swift in Sources */,
+				A002 /* ContentView.swift in Sources */,
+				A003 /* RetroShellView.swift in Sources */,
+				A004 /* ClassicMusicScreen.swift in Sources */,
+				A005 /* MainMenuView.swift in Sources */,
+				A006 /* NowPlayingView.swift in Sources */,
+				A007 /* SongsView.swift in Sources */,
+				A008 /* ArtistsView.swift in Sources */,
+				A009 /* AlbumsView.swift in Sources */,
+				A010 /* PlaylistsView.swift in Sources */,
+				A011 /* SettingsView.swift in Sources */,
+				A012 /* ArtworkView.swift in Sources */,
+				A013 /* MusicPlayerViewModel.swift in Sources */,
+				A014 /* MusicKitService.swift in Sources */,
+				A015 /* LocalMusicService.swift in Sources */,
+				A016 /* Song.swift in Sources */,
+				A017 /* ShellColor.swift in Sources */,
+				A021 /* PurchaseManager.swift in Sources */,
+				A022 /* PaywallView.swift in Sources */,
+				A023 /* KeychainHelper.swift in Sources */,
+				A024 /* AppSettings.swift in Sources */,
+				A025 /* TouchWheelView.swift in Sources */,
+				A026 /* ExtrasView.swift in Sources */,
+				A027 /* BrickBounceView.swift in Sources */,
+				A028 /* TrailView.swift in Sources */,
+				A018 /* LibrarySection.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		DBG /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_CYCLE = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		REL /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_CYCLE = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		TDBG /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "RetroWheel/Resources/RetroWheel.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "RetroWheel/Resources/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.marcustrise.retrowheel;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		TREL /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "RetroWheel/Resources/RetroWheel.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "RetroWheel/Resources/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.marcustrise.retrowheel;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		PROJCFGLIST /* Build configuration list for PBXProject "RetroWheel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DBG /* Debug */,
+				REL /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CFGLIST /* Build configuration list for PBXNativeTarget "RetroWheel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				TDBG /* Debug */,
+				TREL /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = PROJ /* Project object */;
+}

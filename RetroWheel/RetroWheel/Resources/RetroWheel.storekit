@@ -1,0 +1,29 @@
+{
+  "identifier" : "D7F9A3E1-4B2C-4D8F-A1E0-8C3B5D7F9A2E",
+  "nonConsumableProducts" : [
+    {
+      "displayPrice" : "4.99",
+      "familySharable" : false,
+      "internalID" : "A1B2C3D4-E5F6-7890-ABCD-EF1234567890",
+      "localizations" : [
+        {
+          "description" : "Unlock unlimited songs, playlists, streaming library access, and all five shell colour options. One-time purchase — not a subscription, no recurring charges.",
+          "displayName" : "Unlock RetroWheel",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.marcustrise.retrowheel.unlock",
+      "referenceName" : "RetroWheel Lifetime Unlock",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_askToBuyEnabled" : false,
+    "_storeKitErrors" : []
+  },
+  "subscriptionGroups" : [],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}
