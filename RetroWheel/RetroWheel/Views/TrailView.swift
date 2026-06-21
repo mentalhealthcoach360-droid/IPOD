@@ -308,4 +308,8 @@ struct TrailView: View {
     }
 }
 
-#Preview { TrailView() }
+struct TrailView_Previews: PreviewProvider {
+    static var previews: some View {
+        TrailView()
+    }
+}

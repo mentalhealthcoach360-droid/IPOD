@@ -306,9 +306,11 @@ struct SettingsView: View {
     }
 }
 
-#Preview {
-    SettingsView()
-        .environmentObject(MusicPlayerViewModel())
-        .environmentObject(PurchaseManager())
-        .environmentObject(AppSettings())
+struct SettingsView_Previews: PreviewProvider {
+    static var previews: some View {
+        SettingsView()
+            .environmentObject(MusicPlayerViewModel())
+            .environmentObject(PurchaseManager())
+            .environmentObject(AppSettings())
+    }
 }

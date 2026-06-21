@@ -139,11 +139,13 @@ struct MainMenuView: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        MainMenuView()
+struct MainMenuView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationStack {
+            MainMenuView()
+        }
+        .environmentObject(MusicPlayerViewModel())
+        .environmentObject(PurchaseManager())
+        .environmentObject(AppSettings())
     }
-    .environmentObject(MusicPlayerViewModel())
-    .environmentObject(PurchaseManager())
-    .environmentObject(AppSettings())
 }

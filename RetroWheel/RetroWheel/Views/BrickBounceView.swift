@@ -335,4 +335,8 @@ struct BrickBounceView: View {
     }
 }
 
-#Preview { BrickBounceView() }
+struct BrickBounceView_Previews: PreviewProvider {
+    static var previews: some View {
+        BrickBounceView()
+    }
+}
