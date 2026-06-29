@@ -68,24 +68,24 @@ private struct BrickBounceGame {
         ballY += velY
 
         // Wall collisions
-        if ballX - ballR < 0 { ballX = ballR; velX = abs(velX) }
-        if ballX + ballR > 1 { ballX = 1 - ballR; velX = -abs(velX) }
-        if ballY - ballR < 0 { ballY = ballR; velY = abs(velY) }
+        if ballX - Self.ballR < 0 { ballX = Self.ballR; velX = abs(velX) }
+        if ballX + Self.ballR > 1 { ballX = 1 - Self.ballR; velX = -abs(velX) }
+        if ballY - Self.ballR < 0 { ballY = Self.ballR; velY = abs(velY) }
 
         // Paddle collision
         let padLeft  = paddleX
-        let padRight = paddleX + paddleW
-        let padTop   = paddleY
+        let padRight = paddleX + Self.paddleW
+        let padTop   = Self.paddleY
 
-        if ballY + ballR >= padTop &&
-           ballY + ballR <= padTop + paddleH + ballR &&
-           ballX >= padLeft - ballR &&
-           ballX <= padRight + ballR &&
+        if ballY + Self.ballR >= padTop &&
+           ballY + Self.ballR <= padTop + Self.paddleH + Self.ballR &&
+           ballX >= padLeft - Self.ballR &&
+           ballX <= padRight + Self.ballR &&
            velY > 0
         {
             velY = -abs(velY)
             // Add slight angle based on where on paddle ball hits
-            let hitPos = (ballX - (paddleX + paddleW / 2)) / (paddleW / 2)
+            let hitPos = (ballX - (paddleX + Self.paddleW / 2)) / (Self.paddleW / 2)
             velX = hitPos * 0.006
         }
 
@@ -131,8 +131,8 @@ private struct BrickBounceGame {
     }
 
     mutating func resetBall() {
-        ballX = paddleX + paddleW / 2
-        ballY = paddleY - 0.08
+        ballX = paddleX + Self.paddleW / 2
+        ballY = Self.paddleY - 0.08
         velX  = Double.random(in: -0.004...0.004)
         velY  = -0.0045
         phase = .waiting
@@ -335,4 +335,8 @@ struct BrickBounceView: View {
     }
 }
 
-#Preview { BrickBounceView() }
+struct BrickBounceView_Previews: PreviewProvider {
+    static var previews: some View {
+        BrickBounceView()
+    }
+}

@@ -15,12 +15,10 @@ struct SettingsView: View {
                 // Unlock banner (shown only while not yet purchased)
                 if !purchaseManager.hasFullAccess {
                     Section { unlockBannerRow }
-                        .listSectionSpacing(8)
                 }
 
                 // Shell colour picker
                 Section("Shell Colour") { shellColorPicker }
-                    .listSectionSpacing(8)
 
                 // Interaction
                 Section("Interaction") {
@@ -38,14 +36,12 @@ struct SettingsView: View {
                     )
                     sensitivityRow
                 }
-                .listSectionSpacing(8)
 
                 // Music sources
                 Section("Music Sources") {
                     streamingRow
                     localLibraryRow
                 }
-                .listSectionSpacing(8)
 
                 // About
                 Section("About") {
@@ -306,9 +302,11 @@ struct SettingsView: View {
     }
 }
 
-#Preview {
-    SettingsView()
-        .environmentObject(MusicPlayerViewModel())
-        .environmentObject(PurchaseManager())
-        .environmentObject(AppSettings())
+struct SettingsView_Previews: PreviewProvider {
+    static var previews: some View {
+        SettingsView()
+            .environmentObject(MusicPlayerViewModel())
+            .environmentObject(PurchaseManager())
+            .environmentObject(AppSettings())
+    }
 }

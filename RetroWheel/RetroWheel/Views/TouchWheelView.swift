@@ -225,10 +225,12 @@ struct TouchWheelView: View {
     }
 }
 
-#Preview {
-    TouchWheelView()
-        .environmentObject(MusicPlayerViewModel())
-        .environmentObject(AppSettings())
-        .frame(width: 300, height: 300)
-        .background(Color.black)
+struct TouchWheelView_Previews: PreviewProvider {
+    static var previews: some View {
+        TouchWheelView()
+            .environmentObject(MusicPlayerViewModel())
+            .environmentObject(AppSettings())
+            .frame(width: 300, height: 300)
+            .background(Color.black)
+    }
 }

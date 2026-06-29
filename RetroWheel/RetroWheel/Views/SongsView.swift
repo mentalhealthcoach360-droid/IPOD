@@ -120,10 +120,16 @@ struct SongRowView: View {
                     .font(.system(size: 12))
                     .foregroundStyle(Color.white.opacity(0.3))
             } else if isPlaying {
-                Image(systemName: "waveform")
-                    .symbolEffect(.variableColor.iterative.dimInactiveLayers.nonReversing)
-                    .font(.system(size: 14))
-                    .foregroundStyle(Color.white.opacity(0.7))
+                if #available(iOS 17, *) {
+                    Image(systemName: "waveform")
+                        .symbolEffect(.variableColor.iterative.dimInactiveLayers.nonReversing)
+                        .font(.system(size: 14))
+                        .foregroundStyle(Color.white.opacity(0.7))
+                } else {
+                    Image(systemName: "waveform")
+                        .font(.system(size: 14))
+                        .foregroundStyle(Color.white.opacity(0.7))
+                }
             } else {
                 Text(formatDuration(song.duration))
                     .font(.system(size: 11, design: .monospaced))

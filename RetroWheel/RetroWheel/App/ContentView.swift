@@ -9,9 +9,11 @@ struct ContentView: View {
     }
 }
 
-#Preview {
-    ContentView()
-        .environmentObject(MusicPlayerViewModel())
-        .environmentObject(PurchaseManager())
-        .environmentObject(AppSettings())
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+            .environmentObject(MusicPlayerViewModel())
+            .environmentObject(PurchaseManager())
+            .environmentObject(AppSettings())
+    }
 }

@@ -26,7 +26,6 @@
 		A017 /* ShellColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F017 /* ShellColor.swift */; };
 		A018 /* LibrarySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F018 /* LibrarySection.swift */; };
 		A019 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F019 /* Assets.xcassets */; };
-		A020 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F020 /* Info.plist */; };
 		A021 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F022 /* PurchaseManager.swift */; };
 		A022 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F023 /* PaywallView.swift */; };
 		A023 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F024 /* KeychainHelper.swift */; };
@@ -239,7 +238,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A019 /* Assets.xcassets in Resources */,
-				A020 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

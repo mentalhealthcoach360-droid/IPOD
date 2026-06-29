@@ -246,8 +246,10 @@ struct RetroButtonStyle: ButtonStyle {
     }
 }
 
-#Preview {
-    NowPlayingView()
-        .environmentObject(MusicPlayerViewModel())
-        .environmentObject(PurchaseManager())
+struct NowPlayingView_Previews: PreviewProvider {
+    static var previews: some View {
+        NowPlayingView()
+            .environmentObject(MusicPlayerViewModel())
+            .environmentObject(PurchaseManager())
+    }
 }
