@@ -113,8 +113,10 @@ private struct GameEntry: Identifiable {
     let color: Color
 }
 
-#Preview {
-    NavigationStack {
-        ExtrasView()
+struct ExtrasView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationStack {
+            ExtrasView()
+        }
     }
 }

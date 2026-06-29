@@ -107,9 +107,11 @@ struct RetroShellView: View {
     }
 }
 
-#Preview {
-    RetroShellView()
-        .environmentObject(MusicPlayerViewModel())
-        .environmentObject(PurchaseManager())
-        .environmentObject(AppSettings())
+struct RetroShellView_Previews: PreviewProvider {
+    static var previews: some View {
+        RetroShellView()
+            .environmentObject(MusicPlayerViewModel())
+            .environmentObject(PurchaseManager())
+            .environmentObject(AppSettings())
+    }
 }
