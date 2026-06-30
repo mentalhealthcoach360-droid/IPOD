@@ -27,17 +27,23 @@ struct MainMenuView: View {
             VStack(spacing: 0) {
                 menuHeader
 
-                List(menuItems) { item in
-                    NavigationLink(value: item) {
-                        menuRow(item)
+                // ScrollView + VStack so that row highlighting driven by
+                // wheelSelectedIndex is a direct .background on the row view,
+                // not mediated by List's internal cell caching.
+                ScrollView {
+                    VStack(spacing: 0) {
+                        ForEach(Array(menuItems.enumerated()), id: \.element.id) { idx, item in
+                            NavigationLink(value: item) {
+                                menuRow(item,
+                                        isHighlighted: idx == wheelSelectedIndex)
+                            }
+                            .buttonStyle(.plain)
+
+                            Divider()
+                                .background(Color.white.opacity(0.10))
+                        }
                     }
-                    .listRowBackground(
-                        wheelRowBackground(for: item)
-                    )
-                    .listRowSeparatorTint(Color.white.opacity(0.10))
                 }
-                .listStyle(.plain)
-                .scrollContentBackground(.hidden)
 
                 if let song = playerVM.currentSong {
                     miniNowPlaying(song: song)
@@ -52,6 +58,7 @@ struct MainMenuView: View {
         // steps from other screens don't cause a jump on re-entry.
         .onAppear {
             lastWheelStep = playerVM.wheelScrollStep
+            print("[Menu] appeared — lastWheelStep=\(lastWheelStep)  selectedIndex=\(wheelSelectedIndex)")
         }
         // Rotary drag → move highlight up/down the menu list.
         .onChange(of: playerVM.wheelScrollStep) { newStep in
@@ -59,26 +66,21 @@ struct MainMenuView: View {
             lastWheelStep = newStep
             let count = menuItems.count
             wheelSelectedIndex = ((wheelSelectedIndex + delta) % count + count) % count
+            print("[Menu] wheelScrollStep=\(newStep)  delta=\(delta)  selectedIndex=\(wheelSelectedIndex)  item=\(menuItems[wheelSelectedIndex].rawValue)")
         }
         // Center button → navigate to the highlighted item.
         // Only act when this screen is currently visible (path is empty).
         .onChange(of: playerVM.wheelSelectTick) { _ in
             guard playerVM.menuNavigationPath.isEmpty else { return }
             let section = menuItems[wheelSelectedIndex]
+            print("[Menu] CENTER SELECT → \(section.rawValue)")
             playerVM.menuNavigationPath.append(section)
         }
         // MENU/back tap while at the root resets the highlight to the top.
         .onChange(of: playerVM.wheelBackTick) { _ in
+            print("[Menu] BACK → reset selectedIndex to 0")
             wheelSelectedIndex = 0
         }
-    }
-
-    // MARK: - Wheel highlight helper
-
-    private func wheelRowBackground(for item: LibrarySection) -> some View {
-        let isHighlighted = menuItems.firstIndex(of: item) == wheelSelectedIndex
-        return RoundedRectangle(cornerRadius: 6)
-            .fill(isHighlighted ? Color.white.opacity(0.18) : Color.clear)
     }
 
     // MARK: - Header
@@ -103,7 +105,7 @@ struct MainMenuView: View {
     // MARK: - Menu rows
 
     @ViewBuilder
-    private func menuRow(_ item: LibrarySection) -> some View {
+    private func menuRow(_ item: LibrarySection, isHighlighted: Bool = false) -> some View {
         let locked = isLocked(item)
         HStack(spacing: 14) {
             Image(systemName: item.systemIcon)
@@ -122,8 +124,24 @@ struct MainMenuView: View {
                     .font(.system(size: 11))
                     .foregroundStyle(Color.yellow.opacity(0.6))
             }
+
+            // Wheel selection indicator (chevron style)
+            if isHighlighted {
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundStyle(Color.white.opacity(0.6))
+            }
         }
-        .padding(.vertical, 5)
+        .padding(.vertical, 10)
+        .padding(.horizontal, 14)
+        // Direct background on the row content — guaranteed to update
+        // because this value is passed through the view argument, not
+        // read from external state inside the List cell cache.
+        .background(
+            isHighlighted
+                ? Color.white.opacity(0.18)
+                : Color.white.opacity(0.04)
+        )
     }
 
     private func isLocked(_ section: LibrarySection) -> Bool {

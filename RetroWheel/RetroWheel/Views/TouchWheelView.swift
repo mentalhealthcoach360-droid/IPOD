@@ -3,21 +3,27 @@ import AudioToolbox
 
 /// Interactive circular control at the bottom of the RetroWheel screen.
 ///
-/// - Center button: play / pause (or select highlighted menu item)
-/// - Top arc tap: back / menu
-/// - Right arc tap: next track
-/// - Left arc tap: previous track
-/// - Bottom arc tap: play / pause (duplicate)
-/// - Rotary drag: scroll menus (with haptic + optional click sound)
+/// All gestures (rotary drag + directional taps) are captured by a single
+/// .simultaneousGesture on the outer ZStack container, keyed to a named
+/// coordinate space.  This avoids the layer-ordering problem where child
+/// views (innerDisc overlays, directionLabels) intercept touches before
+/// they can reach a gesture on the bottom-most outerRing layer.
+///
+/// Tap-zone map (ring quadrant → action):
+///   Top    (-135°…-45°)  → MENU / back
+///   Bottom ( +45°…+135°) → play / pause
+///   Left   (>135° | <-135°) → previous track
+///   Right  (-45°…+45°)   → next track
+///
+/// Center button (inner disc) keeps its own Button for the select action.
 struct TouchWheelView: View {
     @EnvironmentObject var playerVM: MusicPlayerViewModel
     @EnvironmentObject var appSettings: AppSettings
 
-    // Accumulated rotation angle used to fire discrete scroll steps
     @State private var lastAngle: Double? = nil
     @State private var accumulatedDelta: Double = 0
 
-    // Degrees of drag required for one scroll step, divided by sensitivity
+    /// Degrees of rotary arc required to fire one scroll step.
     private var stepThreshold: Double { 18.0 / appSettings.wheelSensitivity }
 
     var body: some View {
@@ -28,13 +34,40 @@ struct TouchWheelView: View {
                 innerDisc(size: size)
                 centerButton(size: size)
                 directionLabels(size: size)
+                    .allowsHitTesting(false)   // purely decorative
             }
             .frame(width: size, height: size)
+            // Name the coordinate space BEFORE the centering frame so that
+            // DragGesture coordinates map to (0,0)…(size,size).
+            .coordinateSpace(name: "wheel")
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            // Single gesture for the entire wheel.
+            // .simultaneousGesture lets the center Button still receive taps.
+            .simultaneousGesture(
+                DragGesture(minimumDistance: 0, coordinateSpace: .named("wheel"))
+                    .onChanged { value in
+                        let moved = hypot(value.translation.width,
+                                         value.translation.height)
+                        // Only treat as a rotation once the finger has clearly moved.
+                        if moved > 6 {
+                            handleRotation(value: value, size: size)
+                        }
+                    }
+                    .onEnded { value in
+                        let moved = hypot(value.translation.width,
+                                         value.translation.height)
+                        // Small total displacement → the user tapped; detect zone.
+                        if moved < 10 {
+                            handleZoneTap(at: value.startLocation, size: size)
+                        }
+                        lastAngle = nil
+                        accumulatedDelta = 0
+                    }
+            )
         }
     }
 
-    // MARK: - Sub-views
+    // MARK: - Visual layers (no gestures)
 
     private func outerRing(size: CGFloat) -> some View {
         let color = appSettings.shellColor
@@ -51,23 +84,11 @@ struct TouchWheelView: View {
             )
             .overlay(
                 Circle()
-                    .stroke(Color.white.opacity(color.isLight ? 0.2 : 0.12), lineWidth: 1)
+                    .stroke(Color.white.opacity(color.isLight ? 0.2 : 0.12),
+                            lineWidth: 1)
             )
             .shadow(color: .black.opacity(0.4), radius: 12, y: 6)
             .frame(width: size, height: size)
-            // Rotary drag for scrolling
-            .gesture(
-                DragGesture(minimumDistance: 0, coordinateSpace: .local)
-                    .onChanged { value in
-                        handleDrag(value: value, size: size)
-                    }
-                    .onEnded { _ in
-                        lastAngle = nil
-                        accumulatedDelta = 0
-                    }
-            )
-            // Tap on the ring — detect quadrant
-            .onTapGesture { /* handled by overlay buttons */ }
     }
 
     private func innerDisc(size: CGFloat) -> some View {
@@ -84,18 +105,6 @@ struct TouchWheelView: View {
                 )
             )
             .frame(width: size * 0.60, height: size * 0.60)
-            // Transparent quadrant tap targets on the ring area
-            .overlay(alignment: .top)    { arcButton(size: size * 0.60, action: backTapped)    }
-            .overlay(alignment: .bottom) { arcButton(size: size * 0.60, action: playPauseTapped) }
-            .overlay(alignment: .leading) { arcButton(size: size * 0.60, action: prevTapped)   }
-            .overlay(alignment: .trailing){ arcButton(size: size * 0.60, action: nextTapped)   }
-    }
-
-    private func arcButton(size: CGFloat, action: @escaping () -> Void) -> some View {
-        Color.clear
-            .frame(width: size * 0.50, height: size * 0.32)
-            .contentShape(Rectangle())
-            .onTapGesture(perform: action)
     }
 
     private func centerButton(size: CGFloat) -> some View {
@@ -104,7 +113,8 @@ struct TouchWheelView: View {
             Circle()
                 .fill(
                     LinearGradient(
-                        colors: [color.homeButtonColor.opacity(0.9), color.homeButtonColor],
+                        colors: [color.homeButtonColor.opacity(0.9),
+                                 color.homeButtonColor],
                         startPoint: .top,
                         endPoint: .bottom
                     )
@@ -137,15 +147,15 @@ struct TouchWheelView: View {
         }
     }
 
-    // MARK: - Gesture handling
+    // MARK: - Rotary drag
 
-    private func handleDrag(value: DragGesture.Value, size: CGFloat) {
+    private func handleRotation(value: DragGesture.Value, size: CGFloat) {
         let center = CGPoint(x: size / 2, y: size / 2)
         let dx = value.location.x - center.x
         let dy = value.location.y - center.y
         let radius = sqrt(dx * dx + dy * dy)
 
-        // Only respond to touches on the ring, not the center disc
+        // Restrict rotation tracking to the annular ring zone.
         let innerRadius = size * 0.30
         let outerRadius = size / 2
         guard radius > innerRadius && radius < outerRadius else {
@@ -153,53 +163,92 @@ struct TouchWheelView: View {
             return
         }
 
-        let angle = atan2(dy, dx) * (180 / .pi)   // -180 to +180 degrees
+        let angle = atan2(dy, dx) * (180 / .pi)   // -180 … +180
 
         if let prev = lastAngle {
             var delta = angle - prev
-            // Handle 180°/-180° wrap
-            if delta > 180  { delta -= 360 }
+            if delta >  180 { delta -= 360 }
             if delta < -180 { delta += 360 }
             accumulatedDelta += delta
         }
         lastAngle = angle
 
-        // Fire a step whenever accumulated delta crosses the threshold
         while accumulatedDelta >= stepThreshold {
             accumulatedDelta -= stepThreshold
             playerVM.wheelScrollDown()
+            print("[Wheel] ↓ scrollDown  wheelStep=\(playerVM.wheelScrollStep)")
             fireWheelFeedback()
         }
         while accumulatedDelta <= -stepThreshold {
             accumulatedDelta += stepThreshold
             playerVM.wheelScrollUp()
+            print("[Wheel] ↑ scrollUp    wheelStep=\(playerVM.wheelScrollStep)")
             fireWheelFeedback()
+        }
+    }
+
+    // MARK: - Zone tap detection
+
+    private func handleZoneTap(at location: CGPoint, size: CGFloat) {
+        let center = CGPoint(x: size / 2, y: size / 2)
+        let dx = location.x - center.x
+        let dy = location.y - center.y
+        let radius = sqrt(dx * dx + dy * dy)
+
+        // Inner disc taps (center button area) are handled by the Button itself.
+        let innerRadius = size * 0.30
+        let outerRadius = size / 2
+        guard radius > innerRadius && radius <= outerRadius else {
+            print("[Wheel] tap inside center disc — handled by Button (r=\(Int(radius)))")
+            return
+        }
+
+        // Quadrant from angle (-180 to +180, 0° = right, -90° = top).
+        let angle = atan2(dy, dx) * 180 / .pi
+
+        if angle > -135 && angle < -45 {
+            print("[Wheel] tap: TOP → MENU / back  (angle=\(Int(angle))°)")
+            backTapped()
+        } else if angle > 45 && angle < 135 {
+            print("[Wheel] tap: BOTTOM → play/pause  (angle=\(Int(angle))°)")
+            playPauseTapped()
+        } else if angle >= 135 || angle <= -135 {
+            print("[Wheel] tap: LEFT → prev  (angle=\(Int(angle))°)")
+            prevTapped()
+        } else {
+            print("[Wheel] tap: RIGHT → next  (angle=\(Int(angle))°)")
+            nextTapped()
         }
     }
 
     // MARK: - Button actions
 
     private func centerTapped() {
+        print("[Wheel] CENTER button tapped → wheelSelect()")
         playerVM.wheelSelect()
         fireTapFeedback()
     }
 
     private func backTapped() {
+        print("[Wheel] MENU → wheelBack()")
         playerVM.wheelBack()
         fireTapFeedback()
     }
 
     private func nextTapped() {
+        print("[Wheel] RIGHT → skipForward()")
         playerVM.skipForward()
         fireTapFeedback()
     }
 
     private func prevTapped() {
+        print("[Wheel] LEFT → skipBack()")
         playerVM.skipBack()
         fireTapFeedback()
     }
 
     private func playPauseTapped() {
+        print("[Wheel] BOTTOM → togglePlayPause()")
         playerVM.togglePlayPause()
         fireTapFeedback()
     }
@@ -211,7 +260,8 @@ struct TouchWheelView: View {
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
         }
         if appSettings.clickSoundsEnabled {
-            AudioServicesPlaySystemSound(1519)   // UIKit peek sound — subtle
+            print("[Wheel] click sound 1519")
+            AudioServicesPlaySystemSound(1519)
         }
     }
 
@@ -220,7 +270,8 @@ struct TouchWheelView: View {
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         }
         if appSettings.clickSoundsEnabled {
-            AudioServicesPlaySystemSound(1520)   // UIKit pop sound
+            print("[Wheel] tap sound 1520")
+            AudioServicesPlaySystemSound(1520)
         }
     }
 }
