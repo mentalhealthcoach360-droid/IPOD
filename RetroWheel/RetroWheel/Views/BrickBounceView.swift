@@ -90,7 +90,7 @@ private struct BrickBounceGame {
         }
 
         // Ball falls below paddle
-        if ballY - ballR > 1.0 {
+        if ballY - Self.ballR > 1.0 {
             lives -= 1
             if lives <= 0 {
                 phase = .lost
@@ -109,17 +109,17 @@ private struct BrickBounceGame {
             let bx = Double(b.col) * brickW
             let by = brickTop + Double(b.row) * brickH
 
-            if ballX + ballR > bx && ballX - ballR < bx + brickW &&
-               ballY + ballR > by && ballY - ballR < by + brickH
+            if ballX + Self.ballR > bx && ballX - Self.ballR < bx + brickW &&
+               ballY + Self.ballR > by && ballY - Self.ballR < by + brickH
             {
                 bricks[i].alive = false
                 score += b.points
 
                 // Reflect based on which face was hit
-                let overlapL = (ballX + ballR) - bx
-                let overlapR = (bx + brickW) - (ballX - ballR)
-                let overlapT = (ballY + ballR) - by
-                let overlapB = (by + brickH) - (ballY - ballR)
+                let overlapL = (ballX + Self.ballR) - bx
+                let overlapR = (bx + brickW) - (ballX - Self.ballR)
+                let overlapT = (ballY + Self.ballR) - by
+                let overlapB = (by + brickH) - (ballY - Self.ballR)
                 let minH = min(overlapL, overlapR)
                 let minV = min(overlapT, overlapB)
                 if minH < minV { velX = -velX } else { velY = -velY }
