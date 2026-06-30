@@ -9,6 +9,12 @@ struct MainMenuView: View {
         .nowPlaying, .playlists, .artists, .albums, .songs, .extras, .settings
     ]
 
+    // MARK: - Wheel selection state
+    /// Index of the currently wheel-highlighted row (0 … menuItems.count-1).
+    @State private var wheelSelectedIndex: Int = 0
+    /// Last observed wheelScrollStep value; used to compute delta each tick.
+    @State private var lastWheelStep: Int = 0
+
     var body: some View {
         ZStack {
             LinearGradient(
@@ -25,7 +31,9 @@ struct MainMenuView: View {
                     NavigationLink(value: item) {
                         menuRow(item)
                     }
-                    .listRowBackground(Color.clear)
+                    .listRowBackground(
+                        wheelRowBackground(for: item)
+                    )
                     .listRowSeparatorTint(Color.white.opacity(0.10))
                 }
                 .listStyle(.plain)
@@ -40,6 +48,37 @@ struct MainMenuView: View {
         .sheet(isPresented: $playerVM.showPaywall) {
             PaywallView().environmentObject(purchaseManager)
         }
+        // Sync lastWheelStep when this view becomes active so accumulated
+        // steps from other screens don't cause a jump on re-entry.
+        .onAppear {
+            lastWheelStep = playerVM.wheelScrollStep
+        }
+        // Rotary drag → move highlight up/down the menu list.
+        .onChange(of: playerVM.wheelScrollStep) { newStep in
+            let delta = newStep - lastWheelStep
+            lastWheelStep = newStep
+            let count = menuItems.count
+            wheelSelectedIndex = ((wheelSelectedIndex + delta) % count + count) % count
+        }
+        // Center button → navigate to the highlighted item.
+        // Only act when this screen is currently visible (path is empty).
+        .onChange(of: playerVM.wheelSelectTick) { _ in
+            guard playerVM.menuNavigationPath.isEmpty else { return }
+            let section = menuItems[wheelSelectedIndex]
+            playerVM.menuNavigationPath.append(section)
+        }
+        // MENU/back tap while at the root resets the highlight to the top.
+        .onChange(of: playerVM.wheelBackTick) { _ in
+            wheelSelectedIndex = 0
+        }
+    }
+
+    // MARK: - Wheel highlight helper
+
+    private func wheelRowBackground(for item: LibrarySection) -> some View {
+        let isHighlighted = menuItems.firstIndex(of: item) == wheelSelectedIndex
+        return RoundedRectangle(cornerRadius: 6)
+            .fill(isHighlighted ? Color.white.opacity(0.18) : Color.clear)
     }
 
     // MARK: - Header

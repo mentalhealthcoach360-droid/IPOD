@@ -30,13 +30,17 @@ final class MusicPlayerViewModel: ObservableObject {
     // MARK: - Navigation
     @Published var activeSection: LibrarySection = .music
     @Published var selectedShellColor: ShellColor = .black
+    /// The NavigationStack path owned here so both the wheel (back/select) and
+    /// views can read and mutate it without passing Bindings through the hierarchy.
+    @Published var menuNavigationPath: [LibrarySection] = []
 
     // MARK: - Wheel navigation
-    /// Incremented by the touch wheel's rotary drag — views observe this to scroll their lists.
+    /// Incremented/decremented by the touch wheel's rotary drag.
+    /// Views observe this to update their local scroll-selection index.
     @Published private(set) var wheelScrollStep: Int = 0
-    /// Toggled when the wheel's center button is pressed.
+    /// Incremented when the wheel's center button is pressed.
     @Published private(set) var wheelSelectTick: Int = 0
-    /// Toggled when the wheel's MENU button is pressed.
+    /// Incremented when the wheel's MENU/back button is pressed.
     @Published private(set) var wheelBackTick: Int = 0
 
     // MARK: - Free tier tracking
@@ -243,14 +247,16 @@ final class MusicPlayerViewModel: ObservableObject {
     func wheelScrollUp()   { wheelScrollStep -= 1 }
 
     func wheelSelect() {
-        if currentSong != nil {
-            togglePlayPause()
-        }
+        // Views observe wheelSelectTick and decide what "select" means in context.
+        // (MainMenuView navigates; NowPlayingView may toggle play/pause.)
         wheelSelectTick += 1
     }
 
     func wheelBack() {
-        activeSection = .music
+        // Pop one level; if already at the root menu, this is a no-op for the path.
+        if !menuNavigationPath.isEmpty {
+            menuNavigationPath.removeLast()
+        }
         wheelBackTick += 1
     }
 

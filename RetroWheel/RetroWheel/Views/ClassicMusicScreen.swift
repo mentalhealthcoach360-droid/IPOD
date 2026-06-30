@@ -6,10 +6,11 @@ import SwiftUI
 struct ClassicMusicScreen: View {
     @EnvironmentObject var playerVM: MusicPlayerViewModel
     @EnvironmentObject var purchaseManager: PurchaseManager
-    @State private var navigationPath: [LibrarySection] = []
 
     var body: some View {
-        NavigationStack(path: $navigationPath) {
+        // Bind the NavigationStack path to the ViewModel so that wheelBack()
+        // and wheel center-select can drive navigation without Binding threading.
+        NavigationStack(path: $playerVM.menuNavigationPath) {
             MainMenuView()
                 .navigationDestination(for: LibrarySection.self) { section in
                     sectionView(for: section)
@@ -18,7 +19,7 @@ struct ClassicMusicScreen: View {
         .tint(.white)
         .onReceive(playerVM.$activeSection) { section in
             if section == .music {
-                navigationPath = []
+                playerVM.menuNavigationPath = []
             }
         }
     }
